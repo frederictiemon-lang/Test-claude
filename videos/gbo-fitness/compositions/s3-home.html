@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <link rel="stylesheet" href="../styles/brand.css" />
+      <style>
+        #s3-root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #ffffff;
+        }
+        #s3-stage {
+          position: absolute;
+          inset: 0;
+        }
+        /* lime panel carried over from scene 2's wipe, lifts away to reveal the scene */
+        #s3-cover {
+          position: absolute;
+          inset: 0;
+          background: var(--lime);
+        }
+        #s3-chipbox {
+          top: 280px;
+        }
+        #s3-art {
+          position: absolute;
+          left: 190px;
+          top: 400px;
+          width: 700px;
+          height: 543px;
+        }
+        #s3-title {
+          top: 1050px;
+          font-size: 88px;
+          font-stretch: 100%;
+        }
+        #s3-subbox {
+          top: 1310px;
+        }
+      </style>
+      <div id="s3-root" data-composition-id="s3-home" data-width="1080" data-height="1920">
+        <div id="s3-stage">
+          <div class="center-col" id="s3-chipbox"><span class="chip" id="s3-chip">01 · Coaching à domicile</span></div>
+          <svg id="s3-art" viewBox="0 0 800 620" fill="none">
+            <path
+              id="s3-house"
+              d="M80 300 L400 60 L720 300 V580 H80 Z"
+              stroke="#C6F202"
+              stroke-width="14"
+              stroke-linejoin="round"
+              pathLength="1"
+              stroke-dasharray="1"
+              stroke-dashoffset="1"
+            />
+            <path
+              id="s3-pulse"
+              d="M130 420 H300 L340 330 L390 500 L440 360 L470 420 H650"
+              stroke="#FFFFFF"
+              stroke-width="12"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              pathLength="1"
+              stroke-dasharray="1"
+              stroke-dashoffset="1"
+            />
+            <circle id="s3-dot" cx="670" cy="420" r="18" fill="#C6F202" />
+          </svg>
+          <div class="center-col display" id="s3-title">
+            <span class="mask"><span id="s3-t1">CHEZ TOI.</span></span>
+            <span class="mask"><span id="s3-t2" class="lime">À TON RYTHME.</span></span>
+          </div>
+          <div class="center-col" id="s3-subbox">
+            <p class="sub" id="s3-sub">Un coaching personnalisé, adapté à tes objectifs.</p>
+          </div>
+        </div>
+        <div id="s3-cover" data-layout-allow-occlusion></div>
+      </div>
+      <script>
+        (() => {
+          const T0 = 7.5;
+          const at = (t) => t - T0;
+          const tl = gsap.timeline({ paused: true });
+          const E = "power3.out";
+          tl.fromTo("#s3-cover", { yPercent: 0 }, { yPercent: -100, duration: 0.35, ease: "power3.inOut" }, at(7.5));
+          tl.fromTo("#s3-stage", { y: 120, x: 0 }, { y: 0, duration: 0.45, ease: E }, at(7.5));
+          tl.fromTo("#s3-chip", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, ease: E }, at(7.7));
+          // home outline draws on, then a steady pulse: "à ton rythme"
+          tl.fromTo("#s3-house", { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 1.1, ease: "power2.inOut" }, at(7.65));
+          tl.fromTo("#s3-pulse", { attr: { "stroke-dashoffset": 1 } }, { attr: { "stroke-dashoffset": 0 }, duration: 1.0, ease: "power1.inOut" }, at(8.5));
+          tl.fromTo("#s3-dot", { scale: 0, opacity: 1, transformOrigin: "50% 50%" }, { scale: 1, duration: 0.3, ease: "back.out(3)" }, at(9.45));
+          tl.to("#s3-dot", { opacity: 0.35, duration: 0.25, repeat: 5, yoyo: true, ease: "sine.inOut" }, at(9.75));
+          tl.fromTo("#s3-art", { scale: 1 }, { scale: 1.05, duration: 3.6, ease: "none" }, at(7.7));
+          // "Chez toi, un coaching personnalisé," (VO 7.69-9.81) / "à ton rythme" (10.03-11.07)
+          tl.fromTo("#s3-t1", { yPercent: 150 }, { yPercent: 0, duration: 0.4, ease: E }, at(7.7));
+          tl.fromTo("#s3-sub", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.5, ease: E }, at(8.4));
+          tl.fromTo("#s3-t2", { yPercent: 150 }, { yPercent: 0, duration: 0.4, ease: E }, at(10.0));
+          // push out left as the gym scene pushes in
+          tl.to("#s3-stage", { x: -1080, duration: 0.3, ease: "power3.in" }, at(11.25));
+          window.__timelines["s3-home"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

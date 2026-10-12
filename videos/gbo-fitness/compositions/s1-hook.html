@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+  </head>
+  <body>
+    <template>
+      <link rel="stylesheet" href="../styles/brand.css" />
+      <style>
+        #s1-root {
+          position: absolute;
+          inset: 0;
+          overflow: hidden;
+          color: #ffffff;
+        }
+        #s1-line {
+          position: absolute;
+          left: -200px;
+          top: 1010px;
+          width: 1480px;
+          height: 14px;
+          background: var(--lime);
+          transform-origin: 0% 50%;
+        }
+        .s1-streak {
+          position: absolute;
+          left: 0;
+          height: 6px;
+          background: var(--lime);
+          border-radius: 3px;
+        }
+        #s1-q,
+        #s1-a {
+          top: 740px;
+          font-size: 132px;
+          font-stretch: 100%;
+        }
+        #s1-bar {
+          width: 520px;
+          height: 18px;
+          margin-top: 34px;
+          background: var(--lime);
+          transform-origin: 0% 50%;
+        }
+      </style>
+      <div id="s1-root" data-composition-id="s1-hook" data-width="1080" data-height="1920">
+        <div class="s1-streak" id="s1-streak-a" style="top: 420px; width: 360px"></div>
+        <div class="s1-streak" id="s1-streak-b" style="top: 1480px; width: 520px"></div>
+        <div class="s1-streak" id="s1-streak-c" style="top: 1540px; width: 220px"></div>
+        <div id="s1-line" data-layout-allow-overflow></div>
+        <div class="center-col display" id="s1-q" data-layout-allow-overlap>
+          <span class="mask"><span id="s1-q1">TU VEUX</span></span>
+          <span class="mask"><span id="s1-q2">CHANGER ?</span></span>
+        </div>
+        <div class="center-col display" id="s1-a" data-layout-allow-overlap>
+          <span class="mask"><span id="s1-a1">COMMENCE</span></span>
+          <span class="mask"><span id="s1-a2" class="lime">À BOUGER.</span></span>
+          <div id="s1-bar"></div>
+        </div>
+      </div>
+      <script>
+        (() => {
+        // Times are written in spot time (seconds from 0:00) and shifted to scene time.
+        const T0 = 0;
+        const at = (t) => t - T0;
+        const tl = gsap.timeline({ paused: true });
+        const E = "power3.out";
+        const EI = "power3.in";
+        // impact: lime line slices the frame
+        tl.fromTo("#s1-line", { scaleX: 0, y: 0, opacity: 1 }, { scaleX: 1, duration: 0.32, ease: "power4.out" }, at(0));
+        tl.to("#s1-line", { y: -40, opacity: 0, duration: 0.3, ease: EI }, at(0.42));
+        tl.fromTo("#s1-streak-a", { x: -400 }, { x: 1300, duration: 0.6, ease: "power2.inOut" }, at(0.05));
+        tl.fromTo("#s1-streak-b", { x: 1200 }, { x: -600, duration: 0.7, ease: "power2.inOut" }, at(0.15));
+        tl.fromTo("#s1-streak-c", { x: 1200 }, { x: -300, duration: 0.8, ease: "power2.inOut" }, at(0.25));
+        // "Tu veux changer ?" (VO 0.37-1.17)
+        tl.fromTo("#s1-q1", { yPercent: 150 }, { yPercent: 0, duration: 0.35, ease: E }, at(0.3));
+        tl.fromTo("#s1-q2", { yPercent: 150 }, { yPercent: 0, duration: 0.35, ease: E }, at(0.6));
+        tl.fromTo("#s1-q", { scale: 1.12 }, { scale: 1, duration: 0.9, ease: "power2.out" }, at(0.3));
+        tl.to("#s1-q1", { yPercent: -150, duration: 0.25, ease: EI }, at(1.2));
+        tl.to("#s1-q2", { yPercent: -150, duration: 0.25, ease: EI }, at(1.25));
+        // "Commence à bouger !" (VO 1.33-2.15)
+        tl.fromTo("#s1-a1", { yPercent: 150 }, { yPercent: 0, duration: 0.3, ease: E }, at(1.33));
+        tl.fromTo("#s1-a2", { yPercent: 150 }, { yPercent: 0, duration: 0.3, ease: E }, at(1.62));
+        tl.fromTo("#s1-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.4, ease: "power4.out" }, at(1.85));
+        tl.fromTo("#s1-a", { scale: 1, opacity: 1 }, { scale: 1.06, duration: 0.8, ease: "none" }, at(1.95));
+        // zoom-through exit into the brand reveal
+        tl.to("#s1-bar", { scaleX: 0, duration: 0.2, ease: EI }, at(2.7));
+        tl.to("#s1-a", { scale: 2.6, opacity: 0, duration: 0.25, ease: EI }, at(2.75));
+        window.__timelines["s1-hook"] = tl;
+        })();
+      </script>
+    </template>
+  </body>
+</html>

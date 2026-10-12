@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>GBÔ FITNESS — Lancement (30 s, 9:16)</title>
+    <script src="assets/vendor/gsap-3.14.2.min.js"></script>
+    <link rel="stylesheet" href="styles/brand.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        background: #000000;
+        overflow: hidden;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000000;
+      }
+    </style>
+  </head>
+  <body>
+    <!--
+      Spot timing (seconds), 120 BPM grid:
+      S1 hook 0-3 | S2 brand 3-7.5 | S3 home 7.5-11.55 | S4 gym 11.3-14.05 | S5 goals 14-18 | S6 CTA 18-30
+    -->
+    <div id="root" data-composition-id="main" data-start="0" data-duration="30" data-width="1080" data-height="1920">
+      <!-- ================= PICTURE ================= -->
+      <div
+        id="bg"
+        data-composition-id="bg"
+        data-composition-src="compositions/bg.html"
+        data-start="0"
+        data-duration="30"
+        data-track-index="0"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+      <div
+        id="s1-hook"
+        data-composition-id="s1-hook"
+        data-composition-src="compositions/s1-hook.html"
+        data-start="0"
+        data-duration="3"
+        data-track-index="1"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+      <div
+        id="s2-brand"
+        data-composition-id="s2-brand"
+        data-composition-src="compositions/s2-brand.html"
+        data-start="3"
+        data-duration="4.5"
+        data-track-index="2"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+      <div
+        id="s3-home"
+        data-composition-id="s3-home"
+        data-composition-src="compositions/s3-home.html"
+        data-start="7.5"
+        data-duration="4.05"
+        data-track-index="3"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+      <div
+        id="s4-gym"
+        data-composition-id="s4-gym"
+        data-composition-src="compositions/s4-gym.html"
+        data-start="11.3"
+        data-duration="2.75"
+        data-track-index="4"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+      <div
+        id="s5-goals"
+        data-composition-id="s5-goals"
+        data-composition-src="compositions/s5-goals.html"
+        data-start="14"
+        data-duration="4"
+        data-track-index="5"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+      <div
+        id="s6-cta"
+        data-composition-id="s6-cta"
+        data-composition-src="compositions/s6-cta.html"
+        data-start="18"
+        data-duration="12"
+        data-track-index="6"
+        data-width="1080"
+        data-height="1920"
+      ></div>
+
+      <!-- ================= SOUND ================= -->
+      <!-- Music bed: procedural, rights-free (tools/synth_audio.py); ducked under the voice -->
+      <audio
+        id="music"
+        src="assets/music/gbo-bed.wav"
+        data-start="0"
+        data-duration="30"
+        data-track-index="10"
+        data-volume="1"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.85},{"t":0.3,"v":0.85},{"t":0.4,"v":0.32},{"t":2.25,"v":0.32},{"t":2.5,"v":0.7},{"t":3.05,"v":0.7},{"t":3.2,"v":0.32},{"t":13.9,"v":0.32},{"t":14.05,"v":0.36},{"t":17.8,"v":0.36},{"t":17.95,"v":0.6},{"t":18.15,"v":0.6},{"t":18.3,"v":0.24},{"t":29.0,"v":0.24},{"t":29.1,"v":0.75},{"t":30,"v":0.75}]}]}'
+      ></audio>
+
+      <!-- Voice bus: one chain for all six lines (clean, even, clear, peak-safe) -->
+      <hf-audio-group
+        id="voiceover"
+        data-label="Voix off"
+        data-volume="1"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;highpass&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Remove Rumble&quot;,&quot;params&quot;:{&quot;frequency&quot;:90,&quot;q&quot;:0.707,&quot;poles&quot;:&quot;2&quot;}},{&quot;type&quot;:&quot;compressor&quot;,&quot;id&quot;:&quot;n2&quot;,&quot;label&quot;:&quot;Even Out Loudness&quot;,&quot;params&quot;:{&quot;threshold&quot;:-26,&quot;ratio&quot;:3,&quot;attack&quot;:10,&quot;release&quot;:180,&quot;knee&quot;:2.83,&quot;makeup&quot;:4,&quot;mix&quot;:1}},{&quot;type&quot;:&quot;peaking&quot;,&quot;id&quot;:&quot;n3&quot;,&quot;label&quot;:&quot;Add Clarity&quot;,&quot;params&quot;:{&quot;frequency&quot;:3000,&quot;gain&quot;:2,&quot;q&quot;:1}},{&quot;type&quot;:&quot;gain&quot;,&quot;id&quot;:&quot;n4&quot;,&quot;label&quot;:&quot;Level&quot;,&quot;params&quot;:{&quot;gain&quot;:3}},{&quot;type&quot;:&quot;truepeak&quot;,&quot;id&quot;:&quot;n5&quot;,&quot;label&quot;:&quot;Peak Ceiling&quot;,&quot;params&quot;:{&quot;ceiling&quot;:-1.5,&quot;lookahead&quot;:3,&quot;release&quot;:80}}]}"
+      ></hf-audio-group>
+
+      <!-- Voice-over: Kokoro ff_siwis (local TTS), one line per scene -->
+      <audio id="vo1" data-audio-group="voiceover" src="assets/vo/vo1.wav" data-start="0.35" data-duration="1.94" data-track-index="11" data-volume="1"></audio>
+      <audio id="vo2" data-audio-group="voiceover" src="assets/vo/vo2.wav" data-start="3.15" data-duration="4.16" data-track-index="11" data-volume="1"></audio>
+      <audio id="vo3" data-audio-group="voiceover" src="assets/vo/vo3.wav" data-start="7.65" data-duration="3.54" data-track-index="11" data-volume="1"></audio>
+      <audio id="vo4" data-audio-group="voiceover" src="assets/vo/vo4.wav" data-start="11.6" data-duration="2.28" data-track-index="11" data-volume="1"></audio>
+      <audio id="vo5" data-audio-group="voiceover" src="assets/vo/vo5.wav" data-start="14.1" data-duration="3.71" data-track-index="11" data-volume="1"></audio>
+      <audio id="vo6" data-audio-group="voiceover" src="assets/vo/vo6.wav" data-start="18.2" data-duration="10.88" data-track-index="11" data-volume="1"></audio>
+
+      <!-- SFX (procedural) -->
+      <audio id="sfx-impact" src="assets/sfx/impact.wav" data-start="0" data-duration="1.6" data-track-index="12" data-volume="0.5"></audio>
+      <audio id="sfx-swipe-1" src="assets/sfx/swipe.wav" data-start="0.02" data-duration="0.35" data-track-index="13" data-volume="0.5"></audio>
+      <audio id="sfx-whoosh-1" src="assets/sfx/whoosh.wav" data-start="2.75" data-duration="0.5" data-track-index="13" data-volume="0.55"></audio>
+      <audio id="sfx-whoosh-2" src="assets/sfx/whoosh.wav" data-start="7.2" data-duration="0.5" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="sfx-whoosh-3" src="assets/sfx/whoosh.wav" data-start="11.15" data-duration="0.5" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="sfx-whoosh-4" src="assets/sfx/whoosh.wav" data-start="13.75" data-duration="0.5" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="sfx-tick-1" src="assets/sfx/tick.wav" data-start="14.0" data-duration="0.12" data-track-index="14" data-volume="0.4"></audio>
+      <audio id="sfx-tick-2" src="assets/sfx/tick.wav" data-start="15.0" data-duration="0.12" data-track-index="14" data-volume="0.4"></audio>
+      <audio id="sfx-tick-3" src="assets/sfx/tick.wav" data-start="15.75" data-duration="0.12" data-track-index="14" data-volume="0.4"></audio>
+      <audio id="sfx-tick-4" src="assets/sfx/tick.wav" data-start="16.5" data-duration="0.12" data-track-index="14" data-volume="0.4"></audio>
+      <audio id="sfx-whoosh-5" src="assets/sfx/whoosh.wav" data-start="17.75" data-duration="0.5" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="sfx-swipe-2" src="assets/sfx/swipe.wav" data-start="20.25" data-duration="0.35" data-track-index="13" data-volume="0.3"></audio>
+    </div>
+
+    <script>
+      // Each scene drives itself from its own sub-composition timeline.
+      const tl = gsap.timeline({ paused: true });
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
