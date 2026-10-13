@@ -1,0 +1,224 @@
+{
+  "source": "kyria-logo.jpg",
+  "width": 2576,
+  "height": 819,
+  "inks": {
+    "blue": "#2261FE",
+    "orange": "#FD6236",
+    "black": "#000000"
+  },
+  "recomposite_error": {
+    "mean": 0.125,
+    "p99": 3.0
+  },
+  "layers": [
+    {
+      "name": "arm-blue",
+      "ink": "blue",
+      "x": 0,
+      "y": 23,
+      "w": 1016,
+      "h": 360
+    },
+    {
+      "name": "arm-orange",
+      "ink": "orange",
+      "x": 0,
+      "y": 433,
+      "w": 1017,
+      "h": 360
+    },
+    {
+      "name": "kyria-00",
+      "ink": "black",
+      "x": 1103,
+      "y": 39,
+      "w": 158,
+      "h": 187
+    },
+    {
+      "name": "kyria-01",
+      "ink": "black",
+      "x": 1256,
+      "y": 89,
+      "w": 136,
+      "h": 189
+    },
+    {
+      "name": "kyria-02",
+      "ink": "black",
+      "x": 1405,
+      "y": 89,
+      "w": 76,
+      "h": 136
+    },
+    {
+      "name": "kyria-03",
+      "ink": "black",
+      "x": 1495,
+      "y": 35,
+      "w": 36,
+      "h": 191
+    },
+    {
+      "name": "kyria-04",
+      "ink": "black",
+      "x": 1549,
+      "y": 88,
+      "w": 136,
+      "h": 139
+    },
+    {
+      "name": "consultancy-00",
+      "ink": "black",
+      "x": 1096,
+      "y": 307,
+      "w": 169,
+      "h": 189
+    },
+    {
+      "name": "consultancy-01",
+      "ink": "black",
+      "x": 1281,
+      "y": 357,
+      "w": 140,
+      "h": 139
+    },
+    {
+      "name": "consultancy-02",
+      "ink": "black",
+      "x": 1442,
+      "y": 357,
+      "w": 127,
+      "h": 138
+    },
+    {
+      "name": "consultancy-03",
+      "ink": "black",
+      "x": 1589,
+      "y": 356,
+      "w": 119,
+      "h": 140
+    },
+    {
+      "name": "consultancy-04",
+      "ink": "black",
+      "x": 1728,
+      "y": 358,
+      "w": 125,
+      "h": 138
+    },
+    {
+      "name": "consultancy-05",
+      "ink": "black",
+      "x": 1879,
+      "y": 309,
+      "w": 30,
+      "h": 186
+    },
+    {
+      "name": "consultancy-06",
+      "ink": "black",
+      "x": 1936,
+      "y": 321,
+      "w": 65,
+      "h": 174
+    },
+    {
+      "name": "consultancy-07",
+      "ink": "black",
+      "x": 2009,
+      "y": 357,
+      "w": 136,
+      "h": 140
+    },
+    {
+      "name": "consultancy-08",
+      "ink": "black",
+      "x": 2159,
+      "y": 357,
+      "w": 127,
+      "h": 138
+    },
+    {
+      "name": "consultancy-09",
+      "ink": "black",
+      "x": 2305,
+      "y": 357,
+      "w": 131,
+      "h": 139
+    },
+    {
+      "name": "consultancy-10",
+      "ink": "black",
+      "x": 2439,
+      "y": 358,
+      "w": 137,
+      "h": 190
+    },
+    {
+      "name": "services-00",
+      "ink": "black",
+      "x": 1096,
+      "y": 577,
+      "w": 144,
+      "h": 189
+    },
+    {
+      "name": "services-01",
+      "ink": "black",
+      "x": 1257,
+      "y": 627,
+      "w": 134,
+      "h": 139
+    },
+    {
+      "name": "services-02",
+      "ink": "black",
+      "x": 1413,
+      "y": 628,
+      "w": 76,
+      "h": 137
+    },
+    {
+      "name": "services-03",
+      "ink": "black",
+      "x": 1494,
+      "y": 628,
+      "w": 136,
+      "h": 137
+    },
+    {
+      "name": "services-04",
+      "ink": "black",
+      "x": 1640,
+      "y": 574,
+      "w": 36,
+      "h": 191
+    },
+    {
+      "name": "services-05",
+      "ink": "black",
+      "x": 1695,
+      "y": 627,
+      "w": 131,
+      "h": 139
+    },
+    {
+      "name": "services-06",
+      "ink": "black",
+      "x": 1840,
+      "y": 627,
+      "w": 133,
+      "h": 139
+    },
+    {
+      "name": "services-07",
+      "ink": "black",
+      "x": 1989,
+      "y": 626,
+      "w": 120,
+      "h": 140
+    }
+  ]
+}

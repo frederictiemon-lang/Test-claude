@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Kyria Consultancy Services — logo animé (5 s)</title>
+    <script src="assets/vendor/gsap-3.14.2.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        background: #ffffff;
+        overflow: hidden;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #ffffff;
+      }
+      /* faint blueprint dot grid: structure, method */
+      #grid {
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle, #cfd8e8 2.2px, rgba(255, 255, 255, 0) 2.8px);
+        background-size: 48px 48px;
+        background-position: 12px 24px;
+        -webkit-mask-image: radial-gradient(ellipse at 50% 50%, #000 25%, rgba(0, 0, 0, 0) 70%);
+        mask-image: radial-gradient(ellipse at 50% 50%, #000 25%, rgba(0, 0, 0, 0) 70%);
+        opacity: 0;
+      }
+      #focus {
+        position: absolute;
+        left: 137px;
+        top: 948px;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: #2261fe;
+        opacity: 0;
+      }
+      #focus-ring {
+        position: absolute;
+        left: 109px;
+        top: 920px;
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 3px solid #2261fe;
+        opacity: 0;
+      }
+
+      /* The logo keeps the source file's pixel space (2576 x 819) and is fitted
+         to 960 px wide by one static, uniform scale. Layers sit at their
+         original coordinates (tools/split_logo.py). */
+      #fit {
+        position: absolute;
+        left: 60px;
+        top: 808px;
+        width: 2576px;
+        height: 819px;
+        transform-origin: 0 0;
+        transform: scale(0.37267);
+      }
+      #cam {
+        position: absolute;
+        inset: 0;
+        transform-origin: 1288px 408px;
+      }
+      .layer {
+        position: absolute;
+        display: block;
+      }
+      .baseline {
+        position: absolute;
+        height: 6px;
+        border-radius: 3px;
+        background: #2261fe;
+        transform-origin: 0% 50%;
+      }
+      #shine {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 2576px;
+        height: 819px;
+        overflow: hidden;
+        -webkit-mask-image: url("assets/logo/layers/full-alpha.png");
+        mask-image: url("assets/logo/layers/full-alpha.png");
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+      }
+      #shine-band {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 700px;
+        height: 819px;
+        background: linear-gradient(
+          100deg,
+          rgba(255, 255, 255, 0) 25%,
+          rgba(255, 255, 255, 0.45) 50%,
+          rgba(255, 255, 255, 0) 75%
+        );
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="1080" data-height="1920">
+      <div id="grid"></div>
+      <div id="focus-ring"></div>
+      <div id="focus"></div>
+
+      <div id="fit" data-layout-allow-overflow>
+        <div id="cam">
+          <div class="baseline" id="bl-1" style="left: 1096px; top: 240px; width: 600px"></div>
+          <div class="baseline" id="bl-2" style="left: 1096px; top: 510px; width: 1480px"></div>
+          <div class="baseline" id="bl-3" style="left: 1096px; top: 780px; width: 1013px"></div>
+
+          <img class="layer arm" id="l-arm-blue" src="assets/logo/layers/arm-blue.png" alt="" style="left: 0px; top: 23px; width: 1016px; height: 360px" />
+          <img class="layer arm" id="l-arm-orange" src="assets/logo/layers/arm-orange.png" alt="" style="left: 0px; top: 433px; width: 1017px; height: 360px" />
+          <img class="layer letter kyria" id="l-kyria-00" src="assets/logo/layers/kyria-00.png" alt="" style="left: 1103px; top: 39px; width: 158px; height: 187px" />
+          <img class="layer letter kyria" id="l-kyria-01" src="assets/logo/layers/kyria-01.png" alt="" style="left: 1256px; top: 89px; width: 136px; height: 189px" />
+          <img class="layer letter kyria" id="l-kyria-02" src="assets/logo/layers/kyria-02.png" alt="" style="left: 1405px; top: 89px; width: 76px; height: 136px" />
+          <img class="layer letter kyria" id="l-kyria-03" src="assets/logo/layers/kyria-03.png" alt="" style="left: 1495px; top: 35px; width: 36px; height: 191px" />
+          <img class="layer letter kyria" id="l-kyria-04" src="assets/logo/layers/kyria-04.png" alt="" style="left: 1549px; top: 88px; width: 136px; height: 139px" />
+          <img class="layer letter consultancy" id="l-consultancy-00" src="assets/logo/layers/consultancy-00.png" alt="" style="left: 1096px; top: 307px; width: 169px; height: 189px" />
+          <img class="layer letter consultancy" id="l-consultancy-01" src="assets/logo/layers/consultancy-01.png" alt="" style="left: 1281px; top: 357px; width: 140px; height: 139px" />
+          <img class="layer letter consultancy" id="l-consultancy-02" src="assets/logo/layers/consultancy-02.png" alt="" style="left: 1442px; top: 357px; width: 127px; height: 138px" />
+          <img class="layer letter consultancy" id="l-consultancy-03" src="assets/logo/layers/consultancy-03.png" alt="" style="left: 1589px; top: 356px; width: 119px; height: 140px" />
+          <img class="layer letter consultancy" id="l-consultancy-04" src="assets/logo/layers/consultancy-04.png" alt="" style="left: 1728px; top: 358px; width: 125px; height: 138px" />
+          <img class="layer letter consultancy" id="l-consultancy-05" src="assets/logo/layers/consultancy-05.png" alt="" style="left: 1879px; top: 309px; width: 30px; height: 186px" />
+          <img class="layer letter consultancy" id="l-consultancy-06" src="assets/logo/layers/consultancy-06.png" alt="" style="left: 1936px; top: 321px; width: 65px; height: 174px" />
+          <img class="layer letter consultancy" id="l-consultancy-07" src="assets/logo/layers/consultancy-07.png" alt="" style="left: 2009px; top: 357px; width: 136px; height: 140px" />
+          <img class="layer letter consultancy" id="l-consultancy-08" src="assets/logo/layers/consultancy-08.png" alt="" style="left: 2159px; top: 357px; width: 127px; height: 138px" />
+          <img class="layer letter consultancy" id="l-consultancy-09" src="assets/logo/layers/consultancy-09.png" alt="" style="left: 2305px; top: 357px; width: 131px; height: 139px" />
+          <img class="layer letter consultancy" id="l-consultancy-10" src="assets/logo/layers/consultancy-10.png" alt="" style="left: 2439px; top: 358px; width: 137px; height: 190px" />
+          <img class="layer letter services" id="l-services-00" src="assets/logo/layers/services-00.png" alt="" style="left: 1096px; top: 577px; width: 144px; height: 189px" />
+          <img class="layer letter services" id="l-services-01" src="assets/logo/layers/services-01.png" alt="" style="left: 1257px; top: 627px; width: 134px; height: 139px" />
+          <img class="layer letter services" id="l-services-02" src="assets/logo/layers/services-02.png" alt="" style="left: 1413px; top: 628px; width: 76px; height: 137px" />
+          <img class="layer letter services" id="l-services-03" src="assets/logo/layers/services-03.png" alt="" style="left: 1494px; top: 628px; width: 136px; height: 137px" />
+          <img class="layer letter services" id="l-services-04" src="assets/logo/layers/services-04.png" alt="" style="left: 1640px; top: 574px; width: 36px; height: 191px" />
+          <img class="layer letter services" id="l-services-05" src="assets/logo/layers/services-05.png" alt="" style="left: 1695px; top: 627px; width: 131px; height: 139px" />
+          <img class="layer letter services" id="l-services-06" src="assets/logo/layers/services-06.png" alt="" style="left: 1840px; top: 627px; width: 133px; height: 139px" />
+          <img class="layer letter services" id="l-services-07" src="assets/logo/layers/services-07.png" alt="" style="left: 1989px; top: 626px; width: 120px; height: 140px" />
+
+          <div id="shine"><div id="shine-band"></div></div>
+        </div>
+      </div>
+
+      <!-- ================= SOUND (procedural, tools/synth_sfx.py) ================= -->
+      <audio id="sfx-blip" src="assets/sfx/blip.wav" data-start="0.12" data-duration="0.35" data-track-index="10" data-volume="0.35"></audio>
+      <audio id="sfx-swoosh-a" src="assets/sfx/swoosh-a.wav" data-start="0.22" data-duration="0.55" data-track-index="11" data-volume="0.45"></audio>
+      <audio id="sfx-swoosh-b" src="assets/sfx/swoosh-b.wav" data-start="0.36" data-duration="0.55" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="sfx-resolve" src="assets/sfx/resolve.wav" data-start="0.98" data-duration="2.6" data-track-index="13" data-volume="0.55"></audio>
+      <audio id="sfx-pad" src="assets/sfx/pad.wav" data-start="1.1" data-duration="3.9" data-track-index="14" data-volume="0.35"></audio>
+      <audio id="sfx-tick-1" src="assets/sfx/tick.wav" data-start="1.15" data-duration="0.08" data-track-index="15" data-volume="0.25"></audio>
+      <audio id="sfx-tick-2" src="assets/sfx/tick.wav" data-start="1.27" data-duration="0.08" data-track-index="16" data-volume="0.25"></audio>
+      <audio id="sfx-tick-3" src="assets/sfx/tick.wav" data-start="1.39" data-duration="0.08" data-track-index="17" data-volume="0.25"></audio>
+      <audio id="sfx-shimmer" src="assets/sfx/shimmer.wav" data-start="2.68" data-duration="1.2" data-track-index="18" data-volume="0.3"></audio>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const E = "expo.out";
+
+      // 0.00 — blueprint grid and a focus point where the K will lock
+      tl.fromTo("#grid", { opacity: 0 }, { opacity: 1, duration: 0.6, ease: "power2.out" }, 0.0);
+      tl.fromTo("#focus", { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.25, ease: "back.out(3)" }, 0.12);
+      tl.fromTo("#focus-ring", { scale: 0.3, opacity: 0 }, { scale: 1, opacity: 0.8, duration: 0.2, ease: "power2.out" }, 0.14);
+      tl.to("#focus-ring", { scale: 2.6, opacity: 0, duration: 0.55, ease: "power2.out" }, 0.34);
+      tl.to("#focus", { scale: 0, duration: 0.2, ease: "power2.in" }, 0.85);
+
+      // 0.30 — the two arms converge along their own diagonals into the K
+      tl.fromTo("#l-arm-blue", { x: 620, y: -265, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.75, ease: E }, 0.3);
+      tl.fromTo("#l-arm-orange", { x: 620, y: 265, opacity: 0 }, { x: 0, y: 0, opacity: 1, duration: 0.75, ease: E }, 0.42);
+
+      // 1.00 — lock-up: one quiet pulse
+      tl.fromTo("#cam", { scale: 1 }, { scale: 1.018, duration: 0.12, ease: "power2.out" }, 1.0);
+      tl.to("#cam", { scale: 1, duration: 0.5, ease: "power3.out" }, 1.12);
+
+      // 1.15 — baselines draw out from the mark, the wordmark sets on them
+      tl.fromTo(".baseline", { scaleX: 0 }, { scaleX: 1, duration: 0.5, ease: "power3.out", stagger: 0.12 }, 1.15);
+      const words = [
+        [".kyria", 1.3],
+        [".consultancy", 1.55],
+        [".services", 1.85],
+      ];
+      words.forEach(([sel, at]) => {
+        tl.fromTo(sel, { y: 60, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: E, stagger: 0.035 }, at);
+      });
+      // guides leave: they were scaffolding, not part of the logo
+      // each guide leaves once its word has landed
+      [["#bl-1", 1.75], ["#bl-2", 2.1], ["#bl-3", 2.35]].forEach(([sel, at]) => {
+        tl.to(sel, { scaleX: 0, transformOrigin: "100% 50%", duration: 0.35, ease: "power3.in" }, at);
+      });
+
+      // 2.70 — one light pass across the finished mark
+      tl.fromTo("#shine-band", { x: -800 }, { x: 2800, duration: 0.9, ease: "power2.inOut" }, 2.7);
+
+      // 2.0 → 4.5 — slow push-in; grid fades so the end frame is the logo on white
+      tl.to("#cam", { scale: 1.03, duration: 2.5, ease: "sine.inOut" }, 2.0);
+      tl.to("#grid", { opacity: 0, duration: 0.9, ease: "power2.inOut" }, 3.3);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
