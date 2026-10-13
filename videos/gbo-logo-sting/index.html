@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>GBÔ — logo animé (5 s)</title>
+    <script src="assets/vendor/gsap-3.14.2.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        background: #000000;
+        overflow: hidden;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000000;
+      }
+
+      /* soft lime light behind the mark, blooms on the impact */
+      #halo {
+        position: absolute;
+        left: -260px;
+        top: 360px;
+        width: 1600px;
+        height: 1200px;
+        background: radial-gradient(ellipse at 50% 50%, rgba(198, 242, 2, 0.16) 0%, rgba(198, 242, 2, 0) 60%);
+        opacity: 0;
+      }
+      .streak {
+        position: absolute;
+        left: 0;
+        height: 4px;
+        border-radius: 2px;
+        background: #c6f202;
+      }
+
+      /* The logo lives in its own source pixel space (1461 x 527, the PNG's size)
+         and is fitted to 940 px wide by one static scale. Layers are crops of the
+         original PNG placed at their original coordinates. */
+      #fit {
+        position: absolute;
+        left: 70px;
+        top: 790px;
+        width: 1461px;
+        height: 527px;
+        transform-origin: 0 0;
+        transform: scale(0.6434);
+      }
+      #cam {
+        position: absolute;
+        inset: 0;
+        transform-origin: 730px 263px;
+      }
+      .layer {
+        position: absolute;
+        display: block;
+      }
+      #glow {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1461px;
+        height: 527px;
+        filter: blur(26px);
+        opacity: 0;
+      }
+      #shock {
+        position: absolute;
+        left: 1071px;
+        top: 112px;
+        width: 300px;
+        height: 300px;
+        border: 10px solid #c6f202;
+        border-radius: 50%;
+        opacity: 0;
+      }
+      /* specular pass, clipped to the logo's own alpha */
+      #shine {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1461px;
+        height: 527px;
+        overflow: hidden;
+        -webkit-mask-image: url("assets/logo/gbo-logo.png");
+        mask-image: url("assets/logo/gbo-logo.png");
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+      }
+      #shine-band {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 520px;
+        height: 527px;
+        background: linear-gradient(
+          105deg,
+          rgba(255, 255, 255, 0) 25%,
+          rgba(255, 255, 255, 0.9) 50%,
+          rgba(255, 255, 255, 0) 75%
+        );
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="1080" data-height="1920">
+      <div id="halo"></div>
+      <div class="streak" id="streak-a" style="top: 930px; width: 520px"></div>
+      <div class="streak" id="streak-b" style="top: 1010px; width: 300px"></div>
+
+      <div id="fit" data-layout-allow-overflow>
+        <div id="cam">
+          <img id="glow" src="assets/logo/layers/marks.png" alt="" />
+          <div id="shock"></div>
+
+          <img class="layer" id="l-g" src="assets/logo/layers/g.png" alt="G" style="left: 45px; top: 102px; width: 431px; height: 321px" />
+          <img class="layer" id="l-b" src="assets/logo/layers/b.png" alt="B" style="left: 508px; top: 102px; width: 432px; height: 322px" />
+          <img class="layer" id="l-ring" src="assets/logo/layers/o-ring.png" alt="O" style="left: 981px; top: 102px; width: 480px; height: 321px" />
+          <img class="layer" id="l-bell" src="assets/logo/layers/dumbbell.png" alt="" style="left: 1142px; top: 215px; width: 179px; height: 92px" />
+          <img class="layer" id="l-hat" src="assets/logo/layers/circumflex.png" alt="^" style="left: 1142px; top: 0px; width: 224px; height: 76px" />
+
+          <img class="layer word" id="w1" src="assets/logo/layers/w-plus.png" alt="Plus" style="left: 102px; top: 452px; width: 158px; height: 42px" />
+          <img class="layer word" id="w2" src="assets/logo/layers/w-qu-une.png" alt="qu'une" style="left: 285px; top: 451px; width: 252px; height: 53px" />
+          <img class="layer word" id="w3" src="assets/logo/layers/w-pratique.png" alt="pratique," style="left: 558px; top: 448px; width: 333px; height: 56px" />
+          <img class="layer word" id="w4" src="assets/logo/layers/w-un.png" alt="un" style="left: 916px; top: 462px; width: 92px; height: 32px" />
+          <img class="layer word" id="w5" src="assets/logo/layers/w-style.png" alt="style" style="left: 1032px; top: 452px; width: 186px; height: 52px" />
+          <img class="layer word" id="w6" src="assets/logo/layers/w-de.png" alt="de" style="left: 1241px; top: 452px; width: 89px; height: 42px" />
+          <img class="layer word" id="w7" src="assets/logo/layers/w-vie.png" alt="vie" style="left: 1354px; top: 448px; width: 107px; height: 46px" />
+
+          <div id="shine"><div id="shine-band"></div></div>
+        </div>
+      </div>
+
+      <!-- ================= SOUND (procedural, tools/synth_sfx.py) ================= -->
+      <audio id="sfx-whoosh-a" src="assets/sfx/whoosh-a.wav" data-start="0.02" data-duration="0.42" data-track-index="10" data-volume="0.55"></audio>
+      <audio id="sfx-whoosh-b" src="assets/sfx/whoosh-b.wav" data-start="0.14" data-duration="0.42" data-track-index="11" data-volume="0.5"></audio>
+      <audio id="sfx-pop" src="assets/sfx/pop.wav" data-start="0.45" data-duration="0.25" data-track-index="12" data-volume="0.6"></audio>
+      <audio id="sfx-clank" src="assets/sfx/clank.wav" data-start="0.93" data-duration="0.9" data-track-index="13" data-volume="0.45"></audio>
+      <audio id="sfx-riser" src="assets/sfx/riser.wav" data-start="0.5" data-duration="0.95" data-track-index="18" data-volume="0.3"></audio>
+      <audio id="sfx-fall" src="assets/sfx/fall.wav" data-start="1.14" data-duration="0.32" data-track-index="14" data-volume="0.35"></audio>
+      <audio id="sfx-impact" src="assets/sfx/impact.wav" data-start="1.45" data-duration="2.2" data-track-index="15" data-volume="0.9"></audio>
+      <audio id="sfx-tail" src="assets/sfx/sub-tail.wav" data-start="1.5" data-duration="3.5" data-track-index="16" data-volume="0.45"></audio>
+      <audio id="sfx-shimmer" src="assets/sfx/shimmer.wav" data-start="2.72" data-duration="1.4" data-track-index="17" data-volume="0.4"></audio>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // 0.00 — two lime streaks cut through the black
+      tl.fromTo("#streak-a", { x: -600 }, { x: 1200, duration: 0.45, ease: "power2.in" }, 0.0);
+      tl.fromTo("#streak-b", { x: 1150 }, { x: -400, duration: 0.5, ease: "power2.in" }, 0.08);
+
+      // 0.18 — G charges in from the left, B from the right (motion-skew settles)
+      tl.fromTo("#l-g", { x: -1100, skewX: 22, opacity: 0 }, { x: 0, skewX: 0, opacity: 1, duration: 0.5, ease: "power4.out" }, 0.18);
+      tl.fromTo("#l-b", { x: 1300, skewX: -22, opacity: 0 }, { x: 0, skewX: 0, opacity: 1, duration: 0.5, ease: "power4.out" }, 0.3);
+
+      // 0.45 — the Ô ring spins up into place
+      tl.fromTo(
+        "#l-ring",
+        { scale: 0.25, rotation: -35, opacity: 0, transformOrigin: "50% 50%" },
+        { scale: 1, rotation: 0, opacity: 1, duration: 0.55, ease: "back.out(1.7)" },
+        0.45
+      );
+
+      // 0.80 — the dumbbell flips in and locks with a clank
+      tl.fromTo(
+        "#l-bell",
+        { scale: 0, rotation: -120, transformOrigin: "50% 50%" },
+        { scale: 1, rotation: 0, duration: 0.45, ease: "back.out(2.4)" },
+        0.8
+      );
+
+      // 1.15 — the circumflex drops from above and lands (1.47) with a squash
+      tl.fromTo("#l-hat", { y: -1800, opacity: 0, scaleX: 1, scaleY: 1, transformOrigin: "50% 100%" }, { y: 0, opacity: 1, duration: 0.32, ease: "power3.in" }, 1.15);
+      tl.to("#l-hat", { scaleX: 1.14, scaleY: 0.78, duration: 0.06, ease: "power2.out" }, 1.47);
+      tl.to("#l-hat", { scaleX: 1, scaleY: 1, duration: 0.4, ease: "elastic.out(1.1, 0.45)" }, 1.53);
+
+      // 1.47 — impact: three-frame shake, punch, shockwave, glow bloom
+      tl.fromTo("#cam", { x: 0, scale: 1 }, { x: 10, duration: 0.033, ease: "none" }, 1.47);
+      tl.to("#cam", { x: -8, duration: 0.033, ease: "none" }, 1.503);
+      tl.to("#cam", { x: 4, duration: 0.033, ease: "none" }, 1.536);
+      tl.to("#cam", { x: 0, duration: 0.05, ease: "none" }, 1.569);
+      tl.to("#cam", { scale: 1.045, duration: 0.08, ease: "power2.out" }, 1.47);
+      tl.to("#cam", { scale: 1, duration: 0.45, ease: "power3.out" }, 1.55);
+      tl.fromTo("#shock", { scale: 0.3, opacity: 0 }, { opacity: 0.95, duration: 0.03, ease: "none" }, 1.44);
+      tl.to("#shock", { scale: 3.2, opacity: 0, duration: 0.75, ease: "power2.out" }, 1.47);
+      tl.fromTo("#glow", { opacity: 0 }, { opacity: 0.75, duration: 0.1, ease: "power2.out" }, 1.47);
+      tl.to("#glow", { opacity: 0, duration: 1.5, ease: "power2.out" }, 1.57);
+      tl.fromTo("#halo", { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.25, ease: "power2.out" }, 1.47);
+      tl.to("#halo", { opacity: 0.3, duration: 1.4, ease: "power2.inOut" }, 1.75);
+
+      // 1.85 — the signature writes itself in, word by word
+      ["#w1", "#w2", "#w3", "#w4", "#w5", "#w6", "#w7"].forEach((w, i) => {
+        tl.fromTo(
+          w,
+          { y: 34, opacity: 0, clipPath: "inset(0% 100% 0% 0%)" },
+          { y: 0, opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.32, ease: "power3.out" },
+          1.85 + i * 0.085
+        );
+      });
+
+      // 2.75 — one specular pass across the mark
+      tl.fromTo("#shine-band", { x: -600 }, { x: 1600, duration: 0.85, ease: "power2.inOut" }, 2.75);
+
+      // 3.45 — the dumbbell gives one small "lift", then everything settles
+      tl.to("#l-bell", { rotation: -10, y: -10, duration: 0.18, ease: "power2.out" }, 3.45);
+      tl.to("#l-bell", { rotation: 0, y: 0, duration: 0.45, ease: "back.out(2.2)" }, 3.64);
+
+      // 2.0 → 4.6 — slow push-in, then a still final frame (4.6 → 5.0)
+      tl.to("#cam", { scale: 1.035, duration: 2.6, ease: "sine.inOut" }, 2.0);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
