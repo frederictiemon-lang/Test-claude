@@ -1,0 +1,203 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>MELIM AI — logo animé (5 s)</title>
+    <script src="assets/vendor/gsap-3.14.2.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      /* #FEFEFE is the paper colour measured in the source file */
+      html,
+      body {
+        margin: 0;
+        background: #fefefe;
+        overflow: hidden;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #fefefe;
+      }
+
+      /* The logo keeps the source file's pixel space (1254 x 1254) at 1:1,
+         offset so the mark is centred; the camera ends at scale 1 exactly,
+         so the last frame shows the logo pixel for pixel. */
+      #fit {
+        position: absolute;
+        left: -88px;
+        top: 368px;
+        width: 1254px;
+        height: 1254px;
+      }
+      #cam {
+        position: absolute;
+        inset: 0;
+        transform-origin: 628px 592px;
+      }
+      .layer {
+        position: absolute;
+        display: block;
+      }
+      .ripple {
+        position: absolute;
+        left: 526px;
+        top: 698px;
+        width: 200px;
+        height: 60px;
+        border: 4px solid #0757f4;
+        border-radius: 50%;
+        opacity: 0;
+      }
+      #spark {
+        position: absolute;
+        left: 1066px;
+        top: 762px;
+        width: 44px;
+        height: 44px;
+        opacity: 0;
+      }
+      #shine {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1254px;
+        height: 1254px;
+        overflow: hidden;
+        -webkit-mask-image: url("assets/logo/layers/full-alpha.png");
+        mask-image: url("assets/logo/layers/full-alpha.png");
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+      }
+      #shine-band {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 420px;
+        height: 1254px;
+        background: linear-gradient(
+          100deg,
+          rgba(255, 255, 255, 0) 25%,
+          rgba(255, 255, 255, 0.5) 50%,
+          rgba(255, 255, 255, 0) 75%
+        );
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="1080" data-height="1920">
+      <div id="fit" data-layout-allow-overflow>
+        <div id="cam">
+          <div class="ripple" id="rp-1"></div>
+          <div class="ripple" id="rp-2"></div>
+          <div class="ripple" id="rp-3"></div>
+
+          <img class="layer" id="l-m-left" src="assets/logo/layers/m-left.png" alt="" style="left: 352px; top: 270px; width: 261px; height: 463px" />
+          <img class="layer" id="l-m-right" src="assets/logo/layers/m-right.png" alt="" style="left: 641px; top: 270px; width: 261px; height: 463px" />
+          <img class="layer" id="l-drop" src="assets/logo/layers/drop.png" alt="" style="left: 561px; top: 543px; width: 131px; height: 185px" />
+          <img class="layer w-melim" id="l-melim-0-m" src="assets/logo/layers/melim-0-m.png" alt="" style="left: 199px; top: 803px; width: 116px; height: 114px" />
+          <img class="layer w-melim" id="l-melim-1-e" src="assets/logo/layers/melim-1-e.png" alt="" style="left: 370px; top: 803px; width: 80px; height: 114px" />
+          <img class="layer w-melim" id="l-melim-2-l" src="assets/logo/layers/melim-2-l.png" alt="" style="left: 499px; top: 803px; width: 78px; height: 114px" />
+          <img class="layer w-melim" id="l-melim-3-i" src="assets/logo/layers/melim-3-i.png" alt="" style="left: 617px; top: 803px; width: 23px; height: 114px" />
+          <img class="layer w-melim" id="l-melim-4-m" src="assets/logo/layers/melim-4-m.png" alt="" style="left: 694px; top: 803px; width: 116px; height: 114px" />
+          <img class="layer w-ai" id="l-ai-0-a" src="assets/logo/layers/ai-0-a.png" alt="" style="left: 892px; top: 803px; width: 111px; height: 114px" />
+          <img class="layer w-ai" id="l-ai-1-i" src="assets/logo/layers/ai-1-i.png" alt="" style="left: 1036px; top: 803px; width: 23px; height: 114px" />
+
+          <svg id="spark" viewBox="0 0 44 44">
+            <path d="M22 0 C24 15 29 20 44 22 C29 24 24 29 22 44 C20 29 15 24 0 22 C15 20 20 15 22 0 Z" fill="#0757F4" />
+          </svg>
+          <div id="shine"><div id="shine-band"></div></div>
+        </div>
+      </div>
+
+      <!-- ================= SOUND (procedural, tools/synth_sfx.py) ================= -->
+      <audio id="sfx-fall" src="assets/sfx/fall.wav" data-start="0.15" data-duration="0.45" data-track-index="10" data-volume="0.2"></audio>
+      <audio id="sfx-plip" src="assets/sfx/plip.wav" data-start="0.59" data-duration="0.45" data-track-index="11" data-volume="0.6"></audio>
+      <audio id="sfx-bloom" src="assets/sfx/bloom.wav" data-start="0.6" data-duration="1.8" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="sfx-rise" src="assets/sfx/rise.wav" data-start="0.72" data-duration="0.7" data-track-index="13" data-volume="0.35"></audio>
+      <audio id="sfx-chord" src="assets/sfx/chord.wav" data-start="1.33" data-duration="2.6" data-track-index="14" data-volume="0.5"></audio>
+      <audio id="sfx-pad" src="assets/sfx/pad.wav" data-start="1.4" data-duration="3.6" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="sfx-note-0" src="assets/sfx/note-0.wav" data-start="1.55" data-duration="0.6" data-track-index="16" data-volume="0.22"></audio>
+      <audio id="sfx-note-1" src="assets/sfx/note-1.wav" data-start="1.63" data-duration="0.6" data-track-index="17" data-volume="0.22"></audio>
+      <audio id="sfx-note-2" src="assets/sfx/note-2.wav" data-start="1.71" data-duration="0.6" data-track-index="18" data-volume="0.22"></audio>
+      <audio id="sfx-note-3" src="assets/sfx/note-3.wav" data-start="1.79" data-duration="0.6" data-track-index="19" data-volume="0.22"></audio>
+      <audio id="sfx-note-4" src="assets/sfx/note-4.wav" data-start="1.87" data-duration="0.6" data-track-index="20" data-volume="0.22"></audio>
+      <audio id="sfx-ping" src="assets/sfx/ping.wav" data-start="2.05" data-duration="1.0" data-track-index="21" data-volume="0.3"></audio>
+      <audio id="sfx-shimmer" src="assets/sfx/shimmer.wav" data-start="2.68" data-duration="1.1" data-track-index="22" data-volume="0.25"></audio>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // camera starts slightly wide; it lands on 1:1 at the end
+      tl.fromTo("#cam", { scale: 0.97 }, { scale: 0.97, duration: 0.01, ease: "none" }, 0);
+
+      // 0.15 — the drop falls (stretching) and lands at 0.60 with a squash
+      tl.fromTo(
+        "#l-drop",
+        { y: -1200, scaleX: 0.9, scaleY: 1.25, transformOrigin: "50% 100%" },
+        { y: 0, duration: 0.45, ease: "power2.in" },
+        0.15
+      );
+      tl.to("#l-drop", { scaleX: 1.14, scaleY: 0.8, duration: 0.07, ease: "power2.out" }, 0.6);
+      tl.to("#l-drop", { scaleX: 1, scaleY: 1, duration: 0.5, ease: "elastic.out(1, 0.4)" }, 0.67);
+
+      // 0.60 — the ripple spreads along the baseline
+      ["#rp-1", "#rp-2", "#rp-3"].forEach((r, i) => {
+        tl.fromTo(r, { scale: 0.2, opacity: 0 }, { scale: 0.35, opacity: 0.8, duration: 0.05, ease: "none" }, 0.6 + i * 0.15);
+        tl.to(r, { scale: 3.6, opacity: 0, duration: 1.0, ease: "power2.out" }, 0.65 + i * 0.15);
+      });
+
+      // 0.80 — the two halves of the M rise out of the ripple and close on the drop
+      tl.fromTo(
+        "#l-m-left",
+        { x: -40, clipPath: "inset(100% 0% 0% 0%)" },
+        { x: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 0.65, ease: "power3.out" },
+        0.8
+      );
+      tl.fromTo(
+        "#l-m-right",
+        { x: 40, clipPath: "inset(100% 0% 0% 0%)" },
+        { x: 0, clipPath: "inset(0% 0% 0% 0%)", duration: 0.65, ease: "power3.out" },
+        0.9
+      );
+
+      // 1.35 — lock-up pulse
+      tl.to("#cam", { scale: 0.985, duration: 0.1, ease: "power2.out" }, 1.35);
+      tl.to("#cam", { scale: 0.97, duration: 0.18, ease: "power2.inOut" }, 1.46);
+
+      // 1.55 — MELIM resolves out of a blur, letter by letter
+      tl.fromTo(
+        ".w-melim",
+        { y: 24, opacity: 0, filter: "blur(14px)" },
+        { y: 0, opacity: 1, filter: "blur(0px)", duration: 0.5, ease: "power3.out", stagger: 0.08 },
+        1.55
+      );
+      // 2.05 — AI lands with a pop and a spark
+      tl.fromTo(
+        ".w-ai",
+        { scale: 0.4, opacity: 0, transformOrigin: "50% 100%" },
+        { scale: 1, opacity: 1, duration: 0.45, ease: "back.out(2.6)", stagger: 0.08 },
+        2.05
+      );
+      tl.fromTo("#spark", { scale: 0, rotation: -45, opacity: 0, transformOrigin: "50% 50%" }, { scale: 1, rotation: 0, opacity: 1, duration: 0.3, ease: "back.out(3)" }, 2.18);
+      tl.to("#spark", { scale: 0, rotation: 45, opacity: 0, duration: 0.35, ease: "power2.in" }, 2.75);
+
+      // 2.70 — one light pass across the finished mark
+      tl.fromTo("#shine-band", { x: -500 }, { x: 1300, duration: 0.85, ease: "power2.inOut" }, 2.7);
+
+      // 1.65 → 4.40 — slow push-in to exactly 1:1, then a still final frame
+      tl.to("#cam", { scale: 1, duration: 2.74, ease: "sine.inOut" }, 1.66);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

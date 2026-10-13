@@ -1,0 +1,96 @@
+{
+  "source": "melim-ai-logo.png",
+  "width": 1254,
+  "height": 1254,
+  "paper": "#FEFEFE",
+  "inks": {
+    "blue": "#0757F4",
+    "navy": "#000619"
+  },
+  "recomposite_error": {
+    "mean": 0.461,
+    "p99": 4.0
+  },
+  "layers": [
+    {
+      "name": "m-left",
+      "ink": "blue",
+      "x": 352,
+      "y": 270,
+      "w": 261,
+      "h": 463
+    },
+    {
+      "name": "m-right",
+      "ink": "blue",
+      "x": 641,
+      "y": 270,
+      "w": 261,
+      "h": 463
+    },
+    {
+      "name": "drop",
+      "ink": "blue",
+      "x": 561,
+      "y": 543,
+      "w": 131,
+      "h": 185
+    },
+    {
+      "name": "melim-0-m",
+      "ink": "navy",
+      "x": 199,
+      "y": 803,
+      "w": 116,
+      "h": 114
+    },
+    {
+      "name": "melim-1-e",
+      "ink": "navy",
+      "x": 370,
+      "y": 803,
+      "w": 80,
+      "h": 114
+    },
+    {
+      "name": "melim-2-l",
+      "ink": "navy",
+      "x": 499,
+      "y": 803,
+      "w": 78,
+      "h": 114
+    },
+    {
+      "name": "melim-3-i",
+      "ink": "navy",
+      "x": 617,
+      "y": 803,
+      "w": 23,
+      "h": 114
+    },
+    {
+      "name": "melim-4-m",
+      "ink": "navy",
+      "x": 694,
+      "y": 803,
+      "w": 116,
+      "h": 114
+    },
+    {
+      "name": "ai-0-a",
+      "ink": "blue",
+      "x": 892,
+      "y": 803,
+      "w": 111,
+      "h": 114
+    },
+    {
+      "name": "ai-1-i",
+      "ink": "blue",
+      "x": 1036,
+      "y": 803,
+      "w": 23,
+      "h": 114
+    }
+  ]
+}
