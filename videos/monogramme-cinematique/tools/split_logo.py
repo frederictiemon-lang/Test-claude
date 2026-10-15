@@ -52,11 +52,11 @@ for name, idx in zip(("glyph-left", "glyph-right"), big):
 full = np.zeros((H, W, 4), np.uint8)
 full[..., 3] = np.where(np.isin(lab, big), np.round(alpha * 255), 0).astype(np.uint8)
 Image.fromarray(full, "RGBA").save(os.path.join(OUT, "full-alpha.png"))
-# lime copy of the whole mark (source of the bloom), and glow copies of each glyph
+# lime copy of the whole mark (source of the bloom), and speed-trail copies of each glyph
 full[..., :3] = np.round(INK).astype(np.uint8)
 Image.fromarray(full, "RGBA").save(os.path.join(OUT, "full-lime.png"))
 for name in ("glyph-left", "glyph-right"):
-    Image.open(os.path.join(OUT, f"{name}.png")).save(os.path.join(OUT, f"{name}-glow.png"))
+    Image.open(os.path.join(OUT, f"{name}.png")).save(os.path.join(OUT, f"{name}-trail.png"))
 
 dropped = int(((alpha > 0) & ~np.isin(lab, big)).sum())
 err = np.abs(comp - img)

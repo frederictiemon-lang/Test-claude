@@ -4,8 +4,10 @@
 
 drone   : dark low drone that opens the piece and carries the reveal
 streak  : airy swell for the anamorphic light streak
-sweep-l / sweep-r : soft filtered sweeps as each glyph is lit
-impact  : deep cinematic hit when light breaks through the seam
+fly-l / fly-r : panned whooshes as each G flies in from its side
+impact  : deep cinematic hit when the two G collide
+whirl   : the fast spin after the impact
+lock    : soft low hit as the mark returns to place with the zoom
 shimmer : fine metallic sheen for the specular pass
 tail    : long reverb-like resonance that fades out by the end
 """
@@ -104,12 +106,40 @@ def tail():
     return norm(lp(s, 500) * a, 0.7)
 
 
+def fly_in(length=0.75):
+    # rising whoosh that crescendos into the collision
+    n = int(length * SR)
+    t = np.arange(n) / SR
+    s = band_sweep(rng.standard_normal(n), 250, 6000)
+    return norm(s * (t / length) ** 2.2)
+
+
+def whirl(length=0.85):
+    # fast spin: an airy band whose flutter slows down as the turn decelerates
+    n = int(length * SR)
+    t = np.arange(n) / SR
+    air = band_sweep(rng.standard_normal(n), 2500, 700)
+    rate = 26 * np.exp(-t * 2.2) + 4
+    flutter = 0.55 + 0.45 * np.sin(2 * np.pi * np.cumsum(rate) / SR)
+    return norm(air * flutter * np.exp(-t * 2.0) * np.clip(t / 0.02, 0, 1))
+
+
+def lock():
+    # soft low hit as the mark returns to place
+    t = t_axis(1.2)
+    s = np.sin(2 * np.pi * np.cumsum(70 + 60 * np.exp(-t * 25)) / SR) * np.exp(-t * 4.5)
+    click = hp(rng.standard_normal(len(t)), 2500) * np.exp(-t * 60) * 0.25
+    return norm(np.tanh(1.3 * (s + click)))
+
+
 os.makedirs(OUT, exist_ok=True)
 for name, sig in {
     "drone": stereo(drone()),
     "streak": stereo(streak(), streak()),
-    "sweep-l": stereo(sweep(300, 3500), sweep(300, 3500) * 0.6),
-    "sweep-r": stereo(sweep(350, 4000) * 0.6, sweep(350, 4000)),
+    "fly-l": stereo(fly_in(), fly_in() * 0.35),
+    "fly-r": stereo(fly_in() * 0.35, fly_in()),
+    "whirl": stereo(whirl(), whirl()),
+    "lock": stereo(lock()),
     "impact": stereo(impact()),
     "shimmer": stereo(shimmer(), shimmer()),
     "tail": stereo(tail()),
