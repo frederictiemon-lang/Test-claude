@@ -1,0 +1,27 @@
+{
+  "source": "monogramme.png",
+  "width": 1254,
+  "height": 1254,
+  "ink": "#C5F905",
+  "dropped_speck_pixels": 44,
+  "recomposite_error": {
+    "mean": 0.323,
+    "p99": 3.59
+  },
+  "layers": [
+    {
+      "name": "glyph-left",
+      "x": 20,
+      "y": 384,
+      "w": 605,
+      "h": 485
+    },
+    {
+      "name": "glyph-right",
+      "x": 630,
+      "y": 384,
+      "w": 604,
+      "h": 483
+    }
+  ]
+}
