@@ -1,0 +1,606 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>Monogramme — animation sportive (5 s)</title>
+    <script src="assets/vendor/gsap-3.14.2.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        background: #000000;
+        overflow: hidden;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000000;
+      }
+      .speed {
+        position: absolute;
+        left: 0;
+        border-radius: 3px;
+        opacity: 0;
+      }
+
+      /* The logo keeps the source file's pixel space (1254 x 1254) at 1:1, offset so the
+         mark is centred. Every layer ends at scale 1 / offset 0 / no filter, so the final
+         frame is the logo pixel for pixel.  #punch: zoom punch · #shake: impact shakes */
+      #fit {
+        position: absolute;
+        left: 333px;
+        top: -86px;
+        width: 1254px;
+        height: 1254px;
+      }
+      #punch,
+      #shake,
+      #glyphs {
+        position: absolute;
+        inset: 0;
+        transform-origin: 627px 626px;
+      }
+      #rays {
+        position: absolute;
+        left: -573px;
+        top: -574px;
+        width: 2400px;
+        height: 2400px;
+        background: repeating-conic-gradient(from 0deg, rgba(197, 249, 5, 0.3) 0deg 3deg, rgba(197, 249, 5, 0) 3deg 15deg);
+        -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 8%, rgba(0, 0, 0, 0) 45%);
+        mask-image: radial-gradient(circle at 50% 50%, #000 8%, rgba(0, 0, 0, 0) 45%);
+        opacity: 0;
+      }
+      .beam {
+        position: absolute;
+        left: -673px;
+        top: 613px;
+        width: 2600px;
+        height: 26px;
+        background: linear-gradient(90deg, rgba(197, 249, 5, 0) 0%, rgba(230, 255, 160, 0.9) 50%, rgba(197, 249, 5, 0) 100%);
+        filter: blur(3px);
+        opacity: 0;
+      }
+      #bloom {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1254px;
+        height: 1254px;
+        filter: blur(30px);
+        opacity: 0;
+      }
+      .ring {
+        position: absolute;
+        width: 300px;
+        height: 300px;
+        border-radius: 50%;
+        border: 8px solid #c5f905;
+        opacity: 0;
+      }
+      .glyph {
+        position: absolute;
+        display: block;
+      }
+      #g-left {
+        left: 20px;
+        top: 384px;
+        width: 605px;
+        height: 485px;
+        transform-origin: 100% 50%;
+      }
+      #g-right {
+        left: 630px;
+        top: 384px;
+        width: 604px;
+        height: 483px;
+        transform-origin: 0% 50%;
+      }
+      #ghost {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1254px;
+        height: 1254px;
+        opacity: 0;
+      }
+      .slice {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1254px;
+        height: 1254px;
+        opacity: 0;
+      }
+      .slice img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1254px;
+        height: 1254px;
+      }
+      .spark {
+        position: absolute;
+        height: 5px;
+        border-radius: 3px;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0), #ffffff 55%, #c5f905);
+        opacity: 0;
+      }
+      #flare {
+        position: absolute;
+        left: -333px;
+        top: 618px;
+        width: 1920px;
+        height: 16px;
+        background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.95) 50%, rgba(255, 255, 255, 0) 100%);
+        filter: blur(2px);
+        opacity: 0;
+      }
+      #shine {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1254px;
+        height: 1254px;
+        overflow: hidden;
+        -webkit-mask-image: url("assets/logo/layers/full-alpha.png");
+        mask-image: url("assets/logo/layers/full-alpha.png");
+        -webkit-mask-size: 100% 100%;
+        mask-size: 100% 100%;
+        -webkit-mask-repeat: no-repeat;
+        mask-repeat: no-repeat;
+      }
+      #shine-band {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 300px;
+        height: 1254px;
+        background: linear-gradient(105deg, rgba(255, 255, 255, 0) 25%, rgba(255, 255, 255, 0.6) 50%, rgba(255, 255, 255, 0) 75%);
+      }
+      #flash {
+        position: absolute;
+        inset: 0;
+        background: #ffffff;
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="1920" data-height="1080">
+      <div class="speed" id="spa0" style="top: 642px; width: 321px; height: 6px; background: linear-gradient(90deg, rgba(0,0,0,0), #C5F905)"></div>
+      <div class="speed" id="spa1" style="top: 328px; width: 356px; height: 6px; background: linear-gradient(90deg, rgba(0,0,0,0), #C5F905)"></div>
+      <div class="speed" id="spa2" style="top: 340px; width: 433px; height: 6px; background: linear-gradient(90deg, rgba(0,0,0,0), #C5F905)"></div>
+      <div class="speed" id="spa3" style="top: 611px; width: 685px; height: 3px; background: linear-gradient(90deg, rgba(0,0,0,0), #C5F905)"></div>
+      <div class="speed" id="spa4" style="top: 491px; width: 501px; height: 4px; background: linear-gradient(90deg, rgba(0,0,0,0), #C5F905)"></div>
+      <div class="speed" id="spa5" style="top: 611px; width: 344px; height: 4px; background: linear-gradient(90deg, rgba(0,0,0,0), #ffffff)"></div>
+      <div class="speed" id="spa6" style="top: 477px; width: 688px; height: 3px; background: linear-gradient(90deg, rgba(0,0,0,0), #C5F905)"></div>
+      <div class="speed" id="spb0" style="top: 693px; width: 545px; height: 4px; background: linear-gradient(270deg, rgba(0,0,0,0), #ffffff)"></div>
+      <div class="speed" id="spb1" style="top: 717px; width: 691px; height: 6px; background: linear-gradient(270deg, rgba(0,0,0,0), #C5F905)"></div>
+      <div class="speed" id="spb2" style="top: 333px; width: 398px; height: 3px; background: linear-gradient(270deg, rgba(0,0,0,0), #C5F905)"></div>
+      <div class="speed" id="spb3" style="top: 371px; width: 554px; height: 6px; background: linear-gradient(270deg, rgba(0,0,0,0), #C5F905)"></div>
+      <div class="speed" id="spb4" style="top: 690px; width: 288px; height: 4px; background: linear-gradient(270deg, rgba(0,0,0,0), #C5F905)"></div>
+      <div class="speed" id="spb5" style="top: 584px; width: 369px; height: 3px; background: linear-gradient(270deg, rgba(0,0,0,0), #ffffff)"></div>
+      <div class="speed" id="spb6" style="top: 705px; width: 580px; height: 4px; background: linear-gradient(270deg, rgba(0,0,0,0), #ffffff)"></div>
+
+      <div id="fit" data-layout-allow-overflow>
+        <div id="punch">
+          <div id="shake">
+            <div id="rays"></div>
+            <div class="beam" id="beam-a"></div>
+            <div class="beam" id="beam-b"></div>
+            <img id="bloom" src="assets/logo/layers/full-lime.png" alt="" />
+            <div class="ring" id="ring-a" style="left: 172px; top: 476px"></div>
+            <div class="ring" id="ring-b" style="left: 782px; top: 476px"></div>
+            <div class="ring" id="ring-c1" style="left: 477px; top: 476px"></div>
+            <div class="ring" id="ring-c2" style="left: 477px; top: 476px"></div>
+            <div class="ring" id="ring-c3" style="left: 477px; top: 476px"></div>
+            <div id="glyphs">
+              <img class="glyph" id="g-left" src="assets/logo/layers/glyph-left.png" alt="" />
+              <img class="glyph" id="g-right" src="assets/logo/layers/glyph-right.png" alt="" />
+            </div>
+            <img id="ghost" src="assets/logo/layers/full-white.png" alt="" />
+              <div class="slice" id="sl0" style="clip-path: inset(384px 0px 784px 0px)"><img src="assets/logo/layers/full-lime.png" alt="" /></div>
+              <div class="slice" id="sl1" style="clip-path: inset(470px 0px 694px 0px)"><img src="assets/logo/layers/full-lime.png" alt="" /></div>
+              <div class="slice" id="sl2" style="clip-path: inset(560px 0px 554px 0px)"><img src="assets/logo/layers/full-lime.png" alt="" /></div>
+              <div class="slice" id="sl3" style="clip-path: inset(700px 0px 385px 0px)"><img src="assets/logo/layers/full-lime.png" alt="" /></div>
+              <div class="spark" id="sa0" style="left: 603px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sa1" style="left: 603px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sa2" style="left: 603px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sa3" style="left: 608px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sa4" style="left: 612px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sa5" style="left: 603px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sa6" style="left: 608px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sa7" style="left: 612px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sa8" style="left: 608px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sa9" style="left: 603px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sb0" style="left: 613px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sb1" style="left: 613px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sb2" style="left: 608px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sb3" style="left: 613px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sb4" style="left: 617px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sb5" style="left: 608px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sb6" style="left: 613px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sb7" style="left: 617px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sb8" style="left: 608px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sb9" style="left: 608px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sb10" style="left: 613px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sb11" style="left: 617px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc0" style="left: 605px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sc1" style="left: 605px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sc2" style="left: 610px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sc3" style="left: 610px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sc4" style="left: 605px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sc5" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc6" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc7" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc8" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc9" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc10" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc11" style="left: 605px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sc12" style="left: 605px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sc13" style="left: 605px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sc14" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc15" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc16" style="left: 605px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sc17" style="left: 605px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sc18" style="left: 610px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sc19" style="left: 610px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sc20" style="left: 610px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sc21" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc22" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc23" style="left: 610px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sc24" style="left: 605px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sc25" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc26" style="left: 605px; top: 624px; width: 44px"></div>
+              <div class="spark" id="sc27" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc28" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc29" style="left: 610px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sc30" style="left: 614px; top: 624px; width: 26px"></div>
+              <div class="spark" id="sc31" style="left: 610px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sc32" style="left: 610px; top: 624px; width: 34px"></div>
+              <div class="spark" id="sc33" style="left: 614px; top: 624px; width: 26px"></div>
+            <div id="flare" data-layout-allow-overflow></div>
+            <div id="shine"><div id="shine-band"></div></div>
+          </div>
+        </div>
+      </div>
+      <div id="flash"></div>
+
+      <!-- ================= SOUND (procedural, tools/synth_sfx.py) ================= -->
+      <audio id="sfx-whoosh-l" src="assets/sfx/whoosh-l.wav" data-start="0.1" data-duration="0.36" data-track-index="10" data-volume="0.55"></audio>
+      <audio id="sfx-hit-1" src="assets/sfx/hit-1.wav" data-start="0.44" data-duration="0.9" data-track-index="11" data-volume="0.75"></audio>
+      <audio id="sfx-whoosh-r" src="assets/sfx/whoosh-r.wav" data-start="0.99" data-duration="0.36" data-track-index="12" data-volume="0.55"></audio>
+      <audio id="sfx-hit-2" src="assets/sfx/hit-2.wav" data-start="1.34" data-duration="0.9" data-track-index="13" data-volume="0.85"></audio>
+      <audio id="sfx-charge" src="assets/sfx/charge.wav" data-start="1.62" data-duration="0.5" data-track-index="14" data-volume="0.45"></audio>
+      <audio id="sfx-boom" src="assets/sfx/boom.wav" data-start="2.14" data-duration="2.4" data-track-index="15" data-volume="0.95"></audio>
+      <audio id="sfx-glitch" src="assets/sfx/glitch.wav" data-start="2.15" data-duration="0.42" data-track-index="16" data-volume="0.4"></audio>
+      <audio id="sfx-rise" src="assets/sfx/rise.wav" data-start="2.3" data-duration="1.4" data-track-index="17" data-volume="0.35"></audio>
+      <audio id="sfx-sheen" src="assets/sfx/sheen.wav" data-start="3.55" data-duration="0.7" data-track-index="18" data-volume="0.3"></audio>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const T1 = 0.45; // left G stops
+      const T2 = 1.35; // right G stops
+      const T3 = 2.15; // both together
+
+      // ---- 1. the left G flies in from the left and stops dead: impact 1 ----
+      tl.fromTo("#g-left", { x: -1350, skewX: 16 }, { x: 0, skewX: 16, duration: T1 - 0.1, ease: "power3.in" }, 0.1);
+      tl.to("#g-left", { skewX: -6, scaleX: 0.9, duration: 0.05, ease: "power2.out" }, T1);
+      tl.to("#g-left", { skewX: 0, scaleX: 1, duration: 0.4, ease: "elastic.out(1.1, 0.45)" }, T1 + 0.05);
+      tl.set("#g-left", { filter: "saturate(0.2) brightness(2)" }, T1);
+      tl.to("#g-left", { filter: "saturate(1) brightness(1)", duration: 0.25, ease: "power2.out" }, T1 + 0.01);
+      tl.set("#g-left", { filter: "none" }, T1 + 0.27);
+      tl.set("#ring-a", { scale: 0.3, opacity: 0.9 }, T1);
+      tl.to("#ring-a", { scale: 2.6, opacity: 0, duration: 0.5, ease: "power2.out" }, T1 + 0.01);
+
+      // ---- 2. the right G flies in from the right and stops dead: impact 2 ----
+      tl.fromTo("#g-right", { x: 1350, skewX: -16 }, { x: 0, skewX: -16, duration: T2 - 1.0, ease: "power3.in" }, 1.0);
+      tl.to("#g-right", { skewX: 6, scaleX: 0.9, duration: 0.05, ease: "power2.out" }, T2);
+      tl.to("#g-right", { skewX: 0, scaleX: 1, duration: 0.4, ease: "elastic.out(1.1, 0.45)" }, T2 + 0.05);
+      tl.set("#g-right", { filter: "saturate(0.2) brightness(2)" }, T2);
+      tl.to("#g-right", { filter: "saturate(1) brightness(1)", duration: 0.25, ease: "power2.out" }, T2 + 0.01);
+      tl.set("#g-right", { filter: "none" }, T2 + 0.27);
+      tl.set("#ring-b", { scale: 0.3, opacity: 0.9 }, T2);
+      tl.to("#ring-b", { scale: 3, opacity: 0, duration: 0.55, ease: "power2.out" }, T2 + 0.01);
+      // the left G takes the hit
+      tl.to("#g-left", { x: -16, duration: 0.05, ease: "power2.out" }, T2 + 0.005);
+      tl.to("#g-left", { x: 0, duration: 0.2, ease: "power2.inOut" }, T2 + 0.06);
+
+      // ---- 3. both pull back, charge, and slam together: the big impact ----
+      tl.to("#g-left", { x: -80, duration: 0.4, ease: "power2.out" }, 1.62);
+      tl.to("#g-right", { x: 80, duration: 0.4, ease: "power2.out" }, 1.62);
+      tl.to("#punch", { scale: 0.95, duration: 0.4, ease: "power2.out" }, 1.62);
+      tl.to("#g-left", { x: 0, duration: 0.1, ease: "power4.in" }, T3 - 0.1);
+      tl.to("#g-right", { x: 0, duration: 0.1, ease: "power4.in" }, T3 - 0.1);
+      tl.set("#punch", { scale: 1.16 }, T3);
+      tl.to("#punch", { scale: 1, duration: 0.9, ease: "elastic.out(1, 0.5)" }, T3 + 0.01);
+      tl.set("#glyphs", { filter: "saturate(0.2) brightness(2)" }, T3);
+      tl.to("#glyphs", { filter: "saturate(1) brightness(1)", duration: 0.35, ease: "power2.out" }, T3 + 0.01);
+      tl.set("#glyphs", { filter: "none" }, T3 + 0.37);
+      // white flash, then two short strobes
+      tl.set("#flash", { opacity: 0.85 }, T3);
+      tl.to("#flash", { opacity: 0, duration: 0.18, ease: "power2.out" }, T3 + 0.01);
+      tl.set("#flash", { opacity: 0.16 }, T3 + 0.4);
+      tl.to("#flash", { opacity: 0, duration: 0.08, ease: "none" }, T3 + 0.41);
+      tl.set("#flash", { opacity: 0.1 }, T3 + 0.55);
+      tl.to("#flash", { opacity: 0, duration: 0.08, ease: "none" }, T3 + 0.56);
+      // three shockwave rings
+      ["#ring-c1", "#ring-c2", "#ring-c3"].forEach((r, i) => {
+        tl.set(r, { scale: 0.3, opacity: 0.9 - i * 0.2 }, T3 + i * 0.08);
+        tl.to(r, { scale: 5 + i, opacity: 0, duration: 0.7, ease: "power2.out" }, T3 + i * 0.08 + 0.01);
+      });
+      // lights appear: rays, crossing beams, horizontal flare, glow
+      tl.fromTo("#rays", { opacity: 0, rotation: 0 }, { opacity: 1, rotation: 6, duration: 0.25, ease: "power2.out" }, T3);
+      tl.to("#rays", { rotation: 30, duration: 1.4, ease: "none" }, T3 + 0.26);
+      tl.to("#rays", { opacity: 0, duration: 0.6, ease: "power2.in" }, T3 + 1.0);
+      tl.fromTo("#beam-a", { rotation: -24, y: -420, opacity: 0 }, { y: 0, opacity: 0.9, duration: 0.25, ease: "power2.out" }, T3 + 0.02);
+      tl.to("#beam-a", { y: 420, opacity: 0, duration: 0.35, ease: "power2.in" }, T3 + 0.28);
+      tl.fromTo("#beam-b", { rotation: 24, y: 420, opacity: 0 }, { y: 0, opacity: 0.9, duration: 0.25, ease: "power2.out" }, T3 + 0.08);
+      tl.to("#beam-b", { y: -420, opacity: 0, duration: 0.35, ease: "power2.in" }, T3 + 0.34);
+      tl.fromTo("#flare", { opacity: 0, scaleX: 0.1 }, { opacity: 1, scaleX: 1, duration: 0.12, ease: "power2.out" }, T3);
+      tl.to("#flare", { opacity: 0, duration: 0.45, ease: "power2.in" }, T3 + 0.13);
+      tl.fromTo("#bloom", { opacity: 0 }, { opacity: 0.9, duration: 0.1, ease: "power2.out" }, T3);
+      tl.to("#bloom", { opacity: 0, duration: 1.5, ease: "sine.inOut" }, T3 + 0.2);
+
+      // brouillage (glitch): white ghost + displaced slices for 12 frames
+      tl.set("#ghost", { x: 15, opacity: 0.26 }, 2.1500);
+      tl.set("#sl0", { x: -67, opacity: 1 }, 2.1500);
+      tl.set("#sl1", { x: 26, opacity: 1 }, 2.1500);
+      tl.set("#sl2", { x: 61, opacity: 1 }, 2.1500);
+      tl.set("#sl3", { x: 39, opacity: 1 }, 2.1500);
+      tl.set("#ghost", { x: -25, opacity: 0.41 }, 2.1833);
+      tl.set("#sl0", { x: -5, opacity: 1 }, 2.1833);
+      tl.set("#sl1", { x: 0, opacity: 0 }, 2.1833);
+      tl.set("#sl2", { x: 0, opacity: 0 }, 2.1833);
+      tl.set("#sl3", { x: 0, opacity: 0 }, 2.1833);
+      tl.set("#ghost", { x: 15, opacity: 0.72 }, 2.2167);
+      tl.set("#sl0", { x: 33, opacity: 1 }, 2.2167);
+      tl.set("#sl1", { x: -67, opacity: 1 }, 2.2167);
+      tl.set("#sl2", { x: 0, opacity: 0 }, 2.2167);
+      tl.set("#sl3", { x: 64, opacity: 1 }, 2.2167);
+      tl.set("#glyphs", { opacity: 0.35 }, 2.2167);
+      tl.set("#ghost", { x: -13, opacity: 0.46 }, 2.2500);
+      tl.set("#sl0", { x: -67, opacity: 1 }, 2.2500);
+      tl.set("#sl1", { x: 0, opacity: 0 }, 2.2500);
+      tl.set("#sl2", { x: -62, opacity: 1 }, 2.2500);
+      tl.set("#sl3", { x: 0, opacity: 0 }, 2.2500);
+      tl.set("#glyphs", { opacity: 1 }, 2.2500);
+      tl.set("#ghost", { x: -19, opacity: 0.31 }, 2.2833);
+      tl.set("#sl0", { x: -20, opacity: 1 }, 2.2833);
+      tl.set("#sl1", { x: 0, opacity: 0 }, 2.2833);
+      tl.set("#sl2", { x: 0, opacity: 0 }, 2.2833);
+      tl.set("#sl3", { x: 11, opacity: 1 }, 2.2833);
+      tl.set("#ghost", { x: 15, opacity: 0.44 }, 2.3167);
+      tl.set("#sl0", { x: 0, opacity: 0 }, 2.3167);
+      tl.set("#sl1", { x: 0, opacity: 0 }, 2.3167);
+      tl.set("#sl2", { x: 0, opacity: 0 }, 2.3167);
+      tl.set("#sl3", { x: -66, opacity: 1 }, 2.3167);
+      tl.set("#glyphs", { opacity: 0.35 }, 2.3167);
+      tl.set("#ghost", { x: 24, opacity: 0.64 }, 2.3500);
+      tl.set("#sl0", { x: -68, opacity: 1 }, 2.3500);
+      tl.set("#sl1", { x: -11, opacity: 1 }, 2.3500);
+      tl.set("#sl2", { x: 0, opacity: 0 }, 2.3500);
+      tl.set("#sl3", { x: 18, opacity: 1 }, 2.3500);
+      tl.set("#glyphs", { opacity: 1 }, 2.3500);
+      tl.set("#ghost", { x: -23, opacity: 0.53 }, 2.3833);
+      tl.set("#sl0", { x: 0, opacity: 0 }, 2.3833);
+      tl.set("#sl1", { x: 0, opacity: 0 }, 2.3833);
+      tl.set("#sl2", { x: -33, opacity: 1 }, 2.3833);
+      tl.set("#sl3", { x: 0, opacity: 0 }, 2.3833);
+      tl.set("#ghost", { x: 9, opacity: 0.67 }, 2.4167);
+      tl.set("#sl0", { x: 0, opacity: 0 }, 2.4167);
+      tl.set("#sl1", { x: -62, opacity: 1 }, 2.4167);
+      tl.set("#sl2", { x: 1, opacity: 1 }, 2.4167);
+      tl.set("#sl3", { x: 34, opacity: 1 }, 2.4167);
+      tl.set("#ghost", { x: 21, opacity: 0.43 }, 2.4500);
+      tl.set("#sl0", { x: 0, opacity: 0 }, 2.4500);
+      tl.set("#sl1", { x: -31, opacity: 1 }, 2.4500);
+      tl.set("#sl2", { x: 0, opacity: 0 }, 2.4500);
+      tl.set("#sl3", { x: -6, opacity: 1 }, 2.4500);
+      tl.set("#glyphs", { opacity: 0.35 }, 2.4500);
+      tl.set("#ghost", { x: 18, opacity: 0.49 }, 2.4833);
+      tl.set("#sl0", { x: 0, opacity: 0 }, 2.4833);
+      tl.set("#sl1", { x: -44, opacity: 1 }, 2.4833);
+      tl.set("#sl2", { x: 0, opacity: 0 }, 2.4833);
+      tl.set("#sl3", { x: 55, opacity: 1 }, 2.4833);
+      tl.set("#glyphs", { opacity: 1 }, 2.4833);
+      tl.set("#ghost", { x: 23, opacity: 0.67 }, 2.5167);
+      tl.set("#sl0", { x: 0, opacity: 0 }, 2.5167);
+      tl.set("#sl1", { x: 0, opacity: 0 }, 2.5167);
+      tl.set("#sl2", { x: 0, opacity: 0 }, 2.5167);
+      tl.set("#sl3", { x: -18, opacity: 1 }, 2.5167);
+      tl.set("#ghost", { x: 0, opacity: 0 }, 2.5500);
+      tl.set("#sl0", { x: 0, opacity: 0 }, 2.5500);
+      tl.set("#sl1", { x: 0, opacity: 0 }, 2.5500);
+      tl.set("#sl2", { x: 0, opacity: 0 }, 2.5500);
+      tl.set("#sl3", { x: 0, opacity: 0 }, 2.5500);
+      tl.set("#glyphs", { opacity: 1 }, 2.5500);
+
+      // 3.55 — one fast light pass across the settled mark; still final frame from 4.2 s
+      tl.fromTo("#shine-band", { x: -350 }, { x: 1300, duration: 0.6, ease: "power2.inOut" }, 3.55);
+
+      // speed lines
+      tl.fromTo("#spa0", { x: -900, opacity: 0 }, { x: 279, opacity: 0.85, duration: 0.23, ease: "power2.in" }, 0.220);
+      tl.to("#spa0", { opacity: 0, duration: 0.12, ease: "none" }, 0.460);
+      tl.fromTo("#spa1", { x: -900, opacity: 0 }, { x: 244, opacity: 0.85, duration: 0.31, ease: "power2.in" }, 0.137);
+      tl.to("#spa1", { opacity: 0, duration: 0.12, ease: "none" }, 0.460);
+      tl.fromTo("#spa2", { x: -900, opacity: 0 }, { x: 167, opacity: 0.85, duration: 0.25, ease: "power2.in" }, 0.197);
+      tl.to("#spa2", { opacity: 0, duration: 0.12, ease: "none" }, 0.460);
+      tl.fromTo("#spa3", { x: -900, opacity: 0 }, { x: -85, opacity: 0.85, duration: 0.33, ease: "power2.in" }, 0.117);
+      tl.to("#spa3", { opacity: 0, duration: 0.12, ease: "none" }, 0.460);
+      tl.fromTo("#spa4", { x: -900, opacity: 0 }, { x: 99, opacity: 0.85, duration: 0.26, ease: "power2.in" }, 0.188);
+      tl.to("#spa4", { opacity: 0, duration: 0.12, ease: "none" }, 0.460);
+      tl.fromTo("#spa5", { x: -900, opacity: 0 }, { x: 256, opacity: 0.85, duration: 0.29, ease: "power2.in" }, 0.165);
+      tl.to("#spa5", { opacity: 0, duration: 0.12, ease: "none" }, 0.460);
+      tl.fromTo("#spa6", { x: -900, opacity: 0 }, { x: -88, opacity: 0.85, duration: 0.27, ease: "power2.in" }, 0.176);
+      tl.to("#spa6", { opacity: 0, duration: 0.12, ease: "none" }, 0.460);
+      tl.fromTo("#spb0", { x: 2120, opacity: 0 }, { x: 1250, opacity: 0.85, duration: 0.25, ease: "power2.in" }, 1.097);
+      tl.to("#spb0", { opacity: 0, duration: 0.12, ease: "none" }, 1.360);
+      tl.fromTo("#spb1", { x: 2120, opacity: 0 }, { x: 1250, opacity: 0.85, duration: 0.26, ease: "power2.in" }, 1.087);
+      tl.to("#spb1", { opacity: 0, duration: 0.12, ease: "none" }, 1.360);
+      tl.fromTo("#spb2", { x: 2120, opacity: 0 }, { x: 1250, opacity: 0.85, duration: 0.35, ease: "power2.in" }, 1.003);
+      tl.to("#spb2", { opacity: 0, duration: 0.12, ease: "none" }, 1.360);
+      tl.fromTo("#spb3", { x: 2120, opacity: 0 }, { x: 1250, opacity: 0.85, duration: 0.26, ease: "power2.in" }, 1.092);
+      tl.to("#spb3", { opacity: 0, duration: 0.12, ease: "none" }, 1.360);
+      tl.fromTo("#spb4", { x: 2120, opacity: 0 }, { x: 1250, opacity: 0.85, duration: 0.29, ease: "power2.in" }, 1.064);
+      tl.to("#spb4", { opacity: 0, duration: 0.12, ease: "none" }, 1.360);
+      tl.fromTo("#spb5", { x: 2120, opacity: 0 }, { x: 1250, opacity: 0.85, duration: 0.29, ease: "power2.in" }, 1.058);
+      tl.to("#spb5", { opacity: 0, duration: 0.12, ease: "none" }, 1.360);
+      tl.fromTo("#spb6", { x: 2120, opacity: 0 }, { x: 1250, opacity: 0.85, duration: 0.28, ease: "power2.in" }, 1.074);
+      tl.to("#spb6", { opacity: 0, duration: 0.12, ease: "none" }, 1.360);
+
+      // sparks
+      tl.set("#sa0", { x: 0, y: 0, rotation: -57, scaleX: 1.6, opacity: 1 }, 0.450);
+      tl.to("#sa0", { x: 120, y: -185, scaleX: 0.4, opacity: 0, duration: 0.52, ease: "power3.out" }, 0.455);
+      tl.set("#sa1", { x: 0, y: 0, rotation: 68, scaleX: 1.6, opacity: 1 }, 0.450);
+      tl.to("#sa1", { x: 111, y: 275, scaleX: 0.4, opacity: 0, duration: 0.52, ease: "power3.out" }, 0.455);
+      tl.set("#sa2", { x: 0, y: 0, rotation: -12, scaleX: 1.6, opacity: 1 }, 0.450);
+      tl.to("#sa2", { x: 229, y: -48, scaleX: 0.4, opacity: 0, duration: 0.55, ease: "power3.out" }, 0.455);
+      tl.set("#sa3", { x: 0, y: 0, rotation: -1, scaleX: 1.6, opacity: 1 }, 0.450);
+      tl.to("#sa3", { x: 275, y: -7, scaleX: 0.4, opacity: 0, duration: 0.43, ease: "power3.out" }, 0.455);
+      tl.set("#sa4", { x: 0, y: 0, rotation: 17, scaleX: 1.6, opacity: 1 }, 0.450);
+      tl.to("#sa4", { x: 136, y: 42, scaleX: 0.4, opacity: 0, duration: 0.48, ease: "power3.out" }, 0.455);
+      tl.set("#sa5", { x: 0, y: 0, rotation: 47, scaleX: 1.6, opacity: 1 }, 0.450);
+      tl.to("#sa5", { x: 175, y: 189, scaleX: 0.4, opacity: 0, duration: 0.45, ease: "power3.out" }, 0.455);
+      tl.set("#sa6", { x: 0, y: 0, rotation: -15, scaleX: 1.6, opacity: 1 }, 0.450);
+      tl.to("#sa6", { x: 183, y: -50, scaleX: 0.4, opacity: 0, duration: 0.56, ease: "power3.out" }, 0.455);
+      tl.set("#sa7", { x: 0, y: 0, rotation: 75, scaleX: 1.6, opacity: 1 }, 0.450);
+      tl.to("#sa7", { x: 58, y: 215, scaleX: 0.4, opacity: 0, duration: 0.54, ease: "power3.out" }, 0.455);
+      tl.set("#sa8", { x: 0, y: 0, rotation: -62, scaleX: 1.6, opacity: 1 }, 0.450);
+      tl.to("#sa8", { x: 108, y: -200, scaleX: 0.4, opacity: 0, duration: 0.48, ease: "power3.out" }, 0.455);
+      tl.set("#sa9", { x: 0, y: 0, rotation: 56, scaleX: 1.6, opacity: 1 }, 0.450);
+      tl.to("#sa9", { x: 144, y: 217, scaleX: 0.4, opacity: 0, duration: 0.45, ease: "power3.out" }, 0.455);
+      tl.set("#sb0", { x: 0, y: 0, rotation: 232, scaleX: 1.6, opacity: 1 }, 1.350);
+      tl.to("#sb0", { x: -136, y: -175, scaleX: 0.4, opacity: 0, duration: 0.47, ease: "power3.out" }, 1.355);
+      tl.set("#sb1", { x: 0, y: 0, rotation: 165, scaleX: 1.6, opacity: 1 }, 1.350);
+      tl.to("#sb1", { x: -259, y: 70, scaleX: 0.4, opacity: 0, duration: 0.57, ease: "power3.out" }, 1.355);
+      tl.set("#sb2", { x: 0, y: 0, rotation: 169, scaleX: 1.6, opacity: 1 }, 1.350);
+      tl.to("#sb2", { x: -311, y: 61, scaleX: 0.4, opacity: 0, duration: 0.57, ease: "power3.out" }, 1.355);
+      tl.set("#sb3", { x: 0, y: 0, rotation: 165, scaleX: 1.6, opacity: 1 }, 1.350);
+      tl.to("#sb3", { x: -246, y: 67, scaleX: 0.4, opacity: 0, duration: 0.50, ease: "power3.out" }, 1.355);
+      tl.set("#sb4", { x: 0, y: 0, rotation: 252, scaleX: 1.6, opacity: 1 }, 1.350);
+      tl.to("#sb4", { x: -77, y: -241, scaleX: 0.4, opacity: 0, duration: 0.51, ease: "power3.out" }, 1.355);
+      tl.set("#sb5", { x: 0, y: 0, rotation: 220, scaleX: 1.6, opacity: 1 }, 1.350);
+      tl.to("#sb5", { x: -246, y: -205, scaleX: 0.4, opacity: 0, duration: 0.50, ease: "power3.out" }, 1.355);
+      tl.set("#sb6", { x: 0, y: 0, rotation: 206, scaleX: 1.6, opacity: 1 }, 1.350);
+      tl.to("#sb6", { x: -269, y: -129, scaleX: 0.4, opacity: 0, duration: 0.48, ease: "power3.out" }, 1.355);
+      tl.set("#sb7", { x: 0, y: 0, rotation: 177, scaleX: 1.6, opacity: 1 }, 1.350);
+      tl.to("#sb7", { x: -190, y: 9, scaleX: 0.4, opacity: 0, duration: 0.52, ease: "power3.out" }, 1.355);
+      tl.set("#sb8", { x: 0, y: 0, rotation: 174, scaleX: 1.6, opacity: 1 }, 1.350);
+      tl.to("#sb8", { x: -242, y: 27, scaleX: 0.4, opacity: 0, duration: 0.44, ease: "power3.out" }, 1.355);
+      tl.set("#sb9", { x: 0, y: 0, rotation: 165, scaleX: 1.6, opacity: 1 }, 1.350);
+      tl.to("#sb9", { x: -348, y: 91, scaleX: 0.4, opacity: 0, duration: 0.56, ease: "power3.out" }, 1.355);
+      tl.set("#sb10", { x: 0, y: 0, rotation: 180, scaleX: 1.6, opacity: 1 }, 1.350);
+      tl.to("#sb10", { x: -245, y: -1, scaleX: 0.4, opacity: 0, duration: 0.48, ease: "power3.out" }, 1.355);
+      tl.set("#sb11", { x: 0, y: 0, rotation: 149, scaleX: 1.6, opacity: 1 }, 1.350);
+      tl.to("#sb11", { x: -171, y: 102, scaleX: 0.4, opacity: 0, duration: 0.41, ease: "power3.out" }, 1.355);
+      tl.set("#sc0", { x: 0, y: 0, rotation: 318, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc0", { x: 547, y: -500, scaleX: 0.4, opacity: 0, duration: 0.58, ease: "power3.out" }, 2.155);
+      tl.set("#sc1", { x: 0, y: 0, rotation: 130, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc1", { x: -240, y: 290, scaleX: 0.4, opacity: 0, duration: 0.49, ease: "power3.out" }, 2.155);
+      tl.set("#sc2", { x: 0, y: 0, rotation: 184, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc2", { x: -675, y: -48, scaleX: 0.4, opacity: 0, duration: 0.50, ease: "power3.out" }, 2.155);
+      tl.set("#sc3", { x: 0, y: 0, rotation: 327, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc3", { x: 567, y: -374, scaleX: 0.4, opacity: 0, duration: 0.48, ease: "power3.out" }, 2.155);
+      tl.set("#sc4", { x: 0, y: 0, rotation: 292, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc4", { x: 186, y: -454, scaleX: 0.4, opacity: 0, duration: 0.55, ease: "power3.out" }, 2.155);
+      tl.set("#sc5", { x: 0, y: 0, rotation: 185, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc5", { x: -495, y: -47, scaleX: 0.4, opacity: 0, duration: 0.59, ease: "power3.out" }, 2.155);
+      tl.set("#sc6", { x: 0, y: 0, rotation: 303, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc6", { x: 280, y: -426, scaleX: 0.4, opacity: 0, duration: 0.52, ease: "power3.out" }, 2.155);
+      tl.set("#sc7", { x: 0, y: 0, rotation: 325, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc7", { x: 376, y: -261, scaleX: 0.4, opacity: 0, duration: 0.54, ease: "power3.out" }, 2.155);
+      tl.set("#sc8", { x: 0, y: 0, rotation: 148, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc8", { x: -421, y: 262, scaleX: 0.4, opacity: 0, duration: 0.40, ease: "power3.out" }, 2.155);
+      tl.set("#sc9", { x: 0, y: 0, rotation: 162, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc9", { x: -517, y: 164, scaleX: 0.4, opacity: 0, duration: 0.51, ease: "power3.out" }, 2.155);
+      tl.set("#sc10", { x: 0, y: 0, rotation: 72, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc10", { x: 107, y: 321, scaleX: 0.4, opacity: 0, duration: 0.55, ease: "power3.out" }, 2.155);
+      tl.set("#sc11", { x: 0, y: 0, rotation: 344, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc11", { x: 578, y: -163, scaleX: 0.4, opacity: 0, duration: 0.46, ease: "power3.out" }, 2.155);
+      tl.set("#sc12", { x: 0, y: 0, rotation: 2, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc12", { x: 599, y: 19, scaleX: 0.4, opacity: 0, duration: 0.55, ease: "power3.out" }, 2.155);
+      tl.set("#sc13", { x: 0, y: 0, rotation: 342, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc13", { x: 491, y: -160, scaleX: 0.4, opacity: 0, duration: 0.59, ease: "power3.out" }, 2.155);
+      tl.set("#sc14", { x: 0, y: 0, rotation: 196, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc14", { x: -486, y: -144, scaleX: 0.4, opacity: 0, duration: 0.59, ease: "power3.out" }, 2.155);
+      tl.set("#sc15", { x: 0, y: 0, rotation: 315, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc15", { x: 372, y: -367, scaleX: 0.4, opacity: 0, duration: 0.47, ease: "power3.out" }, 2.155);
+      tl.set("#sc16", { x: 0, y: 0, rotation: 58, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc16", { x: 185, y: 291, scaleX: 0.4, opacity: 0, duration: 0.45, ease: "power3.out" }, 2.155);
+      tl.set("#sc17", { x: 0, y: 0, rotation: 148, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc17", { x: -568, y: 351, scaleX: 0.4, opacity: 0, duration: 0.56, ease: "power3.out" }, 2.155);
+      tl.set("#sc18", { x: 0, y: 0, rotation: 135, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc18", { x: -527, y: 520, scaleX: 0.4, opacity: 0, duration: 0.58, ease: "power3.out" }, 2.155);
+      tl.set("#sc19", { x: 0, y: 0, rotation: 18, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc19", { x: 424, y: 142, scaleX: 0.4, opacity: 0, duration: 0.59, ease: "power3.out" }, 2.155);
+      tl.set("#sc20", { x: 0, y: 0, rotation: 340, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc20", { x: 275, y: -99, scaleX: 0.4, opacity: 0, duration: 0.45, ease: "power3.out" }, 2.155);
+      tl.set("#sc21", { x: 0, y: 0, rotation: 109, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc21", { x: -144, y: 412, scaleX: 0.4, opacity: 0, duration: 0.49, ease: "power3.out" }, 2.155);
+      tl.set("#sc22", { x: 0, y: 0, rotation: 168, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc22", { x: -564, y: 120, scaleX: 0.4, opacity: 0, duration: 0.41, ease: "power3.out" }, 2.155);
+      tl.set("#sc23", { x: 0, y: 0, rotation: 187, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc23", { x: -484, y: -60, scaleX: 0.4, opacity: 0, duration: 0.48, ease: "power3.out" }, 2.155);
+      tl.set("#sc24", { x: 0, y: 0, rotation: 84, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc24", { x: 65, y: 618, scaleX: 0.4, opacity: 0, duration: 0.47, ease: "power3.out" }, 2.155);
+      tl.set("#sc25", { x: 0, y: 0, rotation: 70, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc25", { x: 243, y: 680, scaleX: 0.4, opacity: 0, duration: 0.52, ease: "power3.out" }, 2.155);
+      tl.set("#sc26", { x: 0, y: 0, rotation: 335, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc26", { x: 275, y: -127, scaleX: 0.4, opacity: 0, duration: 0.42, ease: "power3.out" }, 2.155);
+      tl.set("#sc27", { x: 0, y: 0, rotation: 256, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc27", { x: -170, y: -680, scaleX: 0.4, opacity: 0, duration: 0.52, ease: "power3.out" }, 2.155);
+      tl.set("#sc28", { x: 0, y: 0, rotation: 79, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc28", { x: 137, y: 690, scaleX: 0.4, opacity: 0, duration: 0.42, ease: "power3.out" }, 2.155);
+      tl.set("#sc29", { x: 0, y: 0, rotation: 304, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc29", { x: 261, y: -387, scaleX: 0.4, opacity: 0, duration: 0.50, ease: "power3.out" }, 2.155);
+      tl.set("#sc30", { x: 0, y: 0, rotation: 312, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc30", { x: 313, y: -342, scaleX: 0.4, opacity: 0, duration: 0.46, ease: "power3.out" }, 2.155);
+      tl.set("#sc31", { x: 0, y: 0, rotation: 95, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc31", { x: -44, y: 517, scaleX: 0.4, opacity: 0, duration: 0.44, ease: "power3.out" }, 2.155);
+      tl.set("#sc32", { x: 0, y: 0, rotation: 64, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc32", { x: 234, y: 475, scaleX: 0.4, opacity: 0, duration: 0.41, ease: "power3.out" }, 2.155);
+      tl.set("#sc33", { x: 0, y: 0, rotation: 287, scaleX: 1.6, opacity: 1 }, 2.150);
+      tl.to("#sc33", { x: 191, y: -634, scaleX: 0.4, opacity: 0, duration: 0.57, ease: "power3.out" }, 2.155);
+
+      // shakes (one position per frame)
+      tl.set("#shake", { x: -10.0, y: -5.9 }, 0.4500);
+      tl.set("#shake", { x: -6.7, y: 3.0 }, 0.4833);
+      tl.set("#shake", { x: 3.3, y: -0.4 }, 0.5167);
+      tl.set("#shake", { x: 0, y: 0 }, 0.5500);
+      tl.set("#shake", { x: -13.0, y: 7.2 }, 1.3500);
+      tl.set("#shake", { x: 8.7, y: 3.6 }, 1.3833);
+      tl.set("#shake", { x: 4.3, y: 0.3 }, 1.4167);
+      tl.set("#shake", { x: 0, y: 0 }, 1.4500);
+      tl.set("#shake", { x: 0.4, y: 0.2 }, 1.7500);
+      tl.set("#shake", { x: -2.3, y: 0.9 }, 1.7833);
+      tl.set("#shake", { x: 0.3, y: 0.3 }, 1.8167);
+      tl.set("#shake", { x: -1.7, y: -0.8 }, 1.8500);
+      tl.set("#shake", { x: -1.4, y: 0.2 }, 1.8833);
+      tl.set("#shake", { x: -2.4, y: -0.9 }, 1.9167);
+      tl.set("#shake", { x: 2.7, y: -1.3 }, 1.9500);
+      tl.set("#shake", { x: 1.1, y: 1.0 }, 1.9833);
+      tl.set("#shake", { x: 1.3, y: -1.3 }, 2.0167);
+      tl.set("#shake", { x: 0, y: 0 }, 2.0500);
+      tl.set("#shake", { x: -18.0, y: 0.1 }, 2.1500);
+      tl.set("#shake", { x: 15.0, y: 1.6 }, 2.1833);
+      tl.set("#shake", { x: -12.0, y: -3.0 }, 2.2167);
+      tl.set("#shake", { x: 9.0, y: -3.7 }, 2.2500);
+      tl.set("#shake", { x: 6.0, y: -3.1 }, 2.2833);
+      tl.set("#shake", { x: 3.0, y: 1.3 }, 2.3167);
+      tl.set("#shake", { x: 0, y: 0 }, 2.3500);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

@@ -1,9 +1,10 @@
-"""Cut the lime-on-black monogram into two transparent layers, plus FX textures.
+"""Cut the lime-on-black monogram into two transparent layers, plus FX copies.
 
 The logo is one flat ink on pure black. Each pixel's alpha is its projection on
 the ink colour (measured in the file); the two glyphs are the two large connected
 components. Nothing is redrawn. The re-composite error against the source on
-black is printed and stored. Also writes a seeded film-grain tile.
+black is printed and stored. Also writes whole-mark copies used by the effects
+(alpha mask, lime copy for the glow, white copy for the glitch ghost).
 
     python3 tools/split_logo.py
 """
@@ -18,7 +19,6 @@ from scipy import ndimage
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 SRC = os.path.join(ROOT, "assets", "logo", "monogramme.png")
 OUT = os.path.join(ROOT, "assets", "logo", "layers")
-FX = os.path.join(ROOT, "assets", "fx")
 NOISE = 0.06
 
 img = np.asarray(Image.open(SRC).convert("RGB")).astype(np.float64)
@@ -52,11 +52,11 @@ for name, idx in zip(("glyph-left", "glyph-right"), big):
 full = np.zeros((H, W, 4), np.uint8)
 full[..., 3] = np.where(np.isin(lab, big), np.round(alpha * 255), 0).astype(np.uint8)
 Image.fromarray(full, "RGBA").save(os.path.join(OUT, "full-alpha.png"))
-# lime copy of the whole mark (source of the bloom), and speed-trail copies of each glyph
+# lime copy of the whole mark (glow, glitch slices) and a white copy (glitch ghost)
 full[..., :3] = np.round(INK).astype(np.uint8)
 Image.fromarray(full, "RGBA").save(os.path.join(OUT, "full-lime.png"))
-for name in ("glyph-left", "glyph-right"):
-    Image.open(os.path.join(OUT, f"{name}.png")).save(os.path.join(OUT, f"{name}-trail.png"))
+full[..., :3] = 255
+Image.fromarray(full, "RGBA").save(os.path.join(OUT, "full-white.png"))
 
 dropped = int(((alpha > 0) & ~np.isin(lab, big)).sum())
 err = np.abs(comp - img)
@@ -71,14 +71,5 @@ manifest = {
 }
 with open(os.path.join(OUT, "manifest.json"), "w") as f:
     json.dump(manifest, f, indent=2)
-
-# film grain tile (seeded, luminance-only, transparent mid-grey)
-os.makedirs(FX, exist_ok=True)
-rng = np.random.default_rng(5)
-g = rng.normal(0, 1, (512, 512))
-tile = np.zeros((512, 512, 4), np.uint8)
-tile[..., :3] = np.where(g[..., None] > 0, 255, 0).astype(np.uint8)
-tile[..., 3] = np.clip(np.abs(g) * 70, 0, 255).astype(np.uint8)
-Image.fromarray(tile, "RGBA").save(os.path.join(FX, "grain.png"))
 
 print(json.dumps({k: manifest[k] for k in ("ink", "dropped_speck_pixels", "recomposite_error", "layers")}))
