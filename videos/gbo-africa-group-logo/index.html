@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <title>GBÔ AFRICA GROUP — logo reveal (5 s)</title>
+    <script src="assets/vendor/gsap-3.14.2.min.js"></script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        background: #000000;
+        overflow: hidden;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #000000;
+      }
+
+      /* ---- light streak (canvas space): its head runs along y = 505, the mark's centre ---- */
+      #streak {
+        position: absolute;
+        left: 0;
+        top: 490px;
+        width: 1100px;
+        height: 30px;
+      }
+      #streak-body {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+      }
+      #streak-haze {
+        position: absolute;
+        left: 300px;
+        top: 7px;
+        width: 800px;
+        height: 16px;
+        background: linear-gradient(90deg, rgba(193, 244, 5, 0) 0%, rgba(193, 244, 5, 0.35) 100%);
+        filter: blur(6px);
+      }
+      #streak-core {
+        position: absolute;
+        left: 0;
+        top: 14px;
+        width: 1100px;
+        height: 2px;
+        background: linear-gradient(90deg, rgba(193, 244, 5, 0) 0%, rgba(193, 244, 5, 0.55) 70%, rgba(236, 255, 176, 1) 100%);
+      }
+      #streak-head {
+        position: absolute;
+        left: 1020px;
+        top: 3px;
+        width: 160px;
+        height: 24px;
+        background: radial-gradient(ellipse at 50% 50%, rgba(236, 255, 176, 0.9) 0%, rgba(193, 244, 5, 0.35) 35%, rgba(193, 244, 5, 0) 70%);
+        filter: blur(3px);
+      }
+
+      /* ---- the logo: source pixel space (1254 x 1254) at 1:1, centred, never moved ----
+         Layers share the source origin, so they stack exactly as in the file. */
+      #fit {
+        position: absolute;
+        left: 331px;
+        top: -65px;
+        width: 1254px;
+        height: 1254px;
+      }
+      .layer {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1254px;
+        height: 1254px;
+        display: block;
+      }
+      /* the reveal: a soft edge that trails the streak head (edge = head x - 331 px) */
+      #reveal {
+        --edge: -391px;
+        position: absolute;
+        inset: 0;
+      }
+      #reveal .revealed {
+        -webkit-mask-image: linear-gradient(90deg, #000 calc(var(--edge) - 90px), rgba(0, 0, 0, 0) calc(var(--edge) + 30px));
+        mask-image: linear-gradient(90deg, #000 calc(var(--edge) - 90px), rgba(0, 0, 0, 0) calc(var(--edge) + 30px));
+      }
+      #mark-front {
+        filter: blur(10px);
+        -webkit-mask-image: linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0) calc(var(--edge) - 240px),
+          #000 calc(var(--edge) - 20px),
+          rgba(0, 0, 0, 0) calc(var(--edge) + 30px)
+        );
+        mask-image: linear-gradient(
+          90deg,
+          rgba(0, 0, 0, 0) calc(var(--edge) - 240px),
+          #000 calc(var(--edge) - 20px),
+          rgba(0, 0, 0, 0) calc(var(--edge) + 30px)
+        );
+        opacity: 0;
+      }
+      .halo {
+        filter: blur(28px);
+        opacity: 0;
+      }
+      #halo-tag {
+        opacity: 0.22;
+      }
+      .bell-glow {
+        opacity: 0;
+      }
+      #bell-glow-a {
+        filter: blur(10px);
+      }
+      #bell-glow-b {
+        filter: blur(26px);
+      }
+      #tagline {
+        position: absolute;
+        inset: 0;
+        opacity: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="5" data-width="1920" data-height="1080">
+      <div id="fit">
+        <!-- glow around the dumbbell: drawn behind the logo, so it only shows in the Ô's dark counter -->
+        <img class="layer bell-glow" id="bell-glow-b" src="assets/logo/layers/dumbbell.png" alt="" />
+        <img class="layer bell-glow" id="bell-glow-a" src="assets/logo/layers/dumbbell.png" alt="" />
+
+        <div id="reveal">
+          <img class="layer halo revealed" id="halo-mark" src="assets/logo/layers/mark.png" alt="" />
+          <img class="layer revealed" id="mark" src="assets/logo/layers/mark.png" alt="GBÔ" />
+          <img class="layer" id="mark-front" src="assets/logo/layers/mark.png" alt="" />
+        </div>
+
+        <div id="tagline">
+          <img class="layer halo" id="halo-tag" src="assets/logo/layers/tagline.png" alt="" />
+          <img class="layer" id="tagline-img" src="assets/logo/layers/tagline.png" alt="Plus qu'une pratique, un style de vie" />
+        </div>
+      </div>
+
+      <div id="streak" data-layout-allow-overflow>
+        <div id="streak-body">
+          <div id="streak-haze"></div>
+          <div id="streak-core"></div>
+          <div id="streak-head"></div>
+        </div>
+      </div>
+
+      <!-- ================= SOUND (procedural, tools/synth_sfx.py) ================= -->
+      <audio id="sfx-whoosh" src="assets/sfx/whoosh.wav" data-start="0.1" data-duration="0.95" data-track-index="10" data-volume="0.5"></audio>
+      <audio id="sfx-impact" src="assets/sfx/impact.wav" data-start="0.98" data-duration="2.2" data-track-index="11" data-volume="0.8"></audio>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+      const FIT_LEFT = 331; // canvas x of the logo's source origin
+      const HEAD_FROM = -60; // streak head enters from just off the left edge…
+      const HEAD_TO = 1980; //   …and leaves past the right edge
+      const STREAK_LEN = 1100;
+      const REVEAL = { start: 0.12, dur: 0.88, ease: "power1.inOut" };
+
+      // 0.0 → 1.0 — a thin lime streak crosses the frame; the logo appears behind its head
+      tl.fromTo(
+        "#streak",
+        { x: HEAD_FROM - STREAK_LEN },
+        { x: HEAD_TO - STREAK_LEN, duration: REVEAL.dur, ease: REVEAL.ease },
+        REVEAL.start
+      );
+      tl.fromTo("#streak-body", { opacity: 0 }, { opacity: 1, duration: 0.18, ease: "sine.out" }, REVEAL.start);
+      tl.to("#streak-body", { opacity: 0, duration: 0.2, ease: "sine.in" }, 0.86);
+      tl.fromTo(
+        "#reveal",
+        { "--edge": `${HEAD_FROM - FIT_LEFT}px` },
+        { "--edge": `${HEAD_TO - FIT_LEFT}px`, duration: REVEAL.dur, ease: REVEAL.ease },
+        REVEAL.start
+      );
+      // subtle glow riding the reveal edge, then a soft halo behind the mark
+      tl.fromTo("#mark-front", { opacity: 0 }, { opacity: 0.8, duration: 0.2, ease: "sine.out" }, REVEAL.start + 0.1);
+      tl.to("#mark-front", { opacity: 0, duration: 0.25, ease: "sine.in" }, 0.8);
+      tl.fromTo("#halo-mark", { opacity: 0 }, { opacity: 0.26, duration: 0.6, ease: "sine.out" }, 0.4);
+
+      // 1.0 — the logo is complete and stays perfectly still; one restrained glow breath
+      tl.to("#halo-mark", { opacity: 0.36, duration: 0.15, ease: "sine.out" }, 1.0);
+      tl.to("#halo-mark", { opacity: 0.22, duration: 0.6, ease: "sine.inOut" }, 1.15);
+
+      // 1.15 → 2.05 — a brief, subtle lime glow around the dumbbell inside the Ô
+      tl.fromTo([".bell-glow"], { opacity: 0 }, { opacity: 0.85, duration: 0.35, ease: "sine.out" }, 1.15);
+      tl.to([".bell-glow"], { opacity: 0, duration: 0.55, ease: "sine.in" }, 1.5);
+
+      // 2.0 → 3.2 — the tagline fades in beneath the logo
+      tl.fromTo("#tagline", { opacity: 0 }, { opacity: 1, duration: 1.2, ease: "sine.inOut" }, 2.0);
+
+      // 3.5 → 4.6 — the glow settles to a subtle, controlled finish; hold to 5.0
+      tl.to("#halo-mark", { opacity: 0.12, duration: 1.1, ease: "sine.inOut" }, 3.5);
+      tl.to("#halo-tag", { opacity: 0.12, duration: 1.1, ease: "sine.inOut" }, 3.5);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

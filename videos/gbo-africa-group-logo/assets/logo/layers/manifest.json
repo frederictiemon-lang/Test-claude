@@ -1,0 +1,35 @@
+{
+  "source": "gbo-africa-group.png",
+  "width": 1254,
+  "height": 1254,
+  "ink_measured": "#C1F405",
+  "brand_spec": "#C6F202",
+  "dropped_speck_pixels": 0,
+  "recomposite_error": {
+    "mean": 0.383,
+    "p99": 6.0
+  },
+  "layers": [
+    {
+      "name": "mark",
+      "x0": 33,
+      "y0": 371,
+      "x1": 1225,
+      "y1": 769
+    },
+    {
+      "name": "tagline",
+      "x0": 54,
+      "y0": 786,
+      "x1": 1207,
+      "y1": 839
+    },
+    {
+      "name": "dumbbell",
+      "x0": 953,
+      "y0": 585,
+      "x1": 1109,
+      "y1": 669
+    }
+  ]
+}
