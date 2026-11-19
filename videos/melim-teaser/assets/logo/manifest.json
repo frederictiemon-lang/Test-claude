@@ -1,0 +1,38 @@
+{
+  "source": "logo-melim-couleur.png",
+  "size": [
+    2172,
+    724
+  ],
+  "paper": "#FEFEFE",
+  "inks_measured": {
+    "blue": "#004AF8",
+    "navy": "#011838"
+  },
+  "brand_book_palette": {
+    "bleu MELIM": "#035BF7",
+    "bleu nuit": "#0A1A33",
+    "blanc": "#FFFFFF",
+    "noir": "#0B1220"
+  },
+  "recomposite_error": {
+    "mean": 0.574,
+    "p99": 6.0
+  },
+  "layers": [
+    {
+      "name": "symbol",
+      "x": 195,
+      "y": 141,
+      "w": 487,
+      "h": 453
+    },
+    {
+      "name": "wordmark",
+      "x": 744,
+      "y": 229,
+      "w": 1234,
+      "h": 271
+    }
+  ]
+}

@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>MELIM — teaser démonstration interne (10 s, 9:16)</title>
+    <script src="assets/vendor/gsap-3.14.2.min.js"></script>
+    <style>
+      /* MELIM brand book v1.0: Sora for titles, Inter for reading (both SIL OFL, shipped locally) */
+      @font-face {
+        font-family: "Sora";
+        src: url("assets/fonts/sora.woff2") format("woff2");
+        font-weight: 100 800;
+        font-display: block;
+      }
+      @font-face {
+        font-family: "Inter";
+        src: url("assets/fonts/inter.woff2") format("woff2");
+        font-weight: 100 900;
+        font-display: block;
+      }
+      :root {
+        /* official palette (brand book, ch. 09) */
+        --bleu: #035bf7;
+        --nuit: #0a1a33;
+        --blanc: #ffffff;
+        --noir: #0b1220;
+        --n1: #f4f6fb;
+        --n2: #e3e8f2;
+        --n3: #8a94a6;
+        --n4: #3a4458;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        background: var(--noir);
+        overflow: hidden;
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--noir);
+        font-family: "Inter", sans-serif;
+      }
+      .clip {
+        position: absolute;
+        inset: 0;
+      }
+      .title {
+        font-family: "Sora", sans-serif;
+        letter-spacing: -0.02em;
+        line-height: 1.08;
+      }
+      .bleu {
+        color: var(--bleu);
+      }
+      /* line mask with headroom for accents */
+      .mask {
+        display: block;
+        overflow: hidden;
+        padding: 0.18em 0 0.08em;
+        margin-top: -0.14em;
+      }
+      .mask > span {
+        display: block;
+      }
+      .col {
+        position: absolute;
+        left: 90px;
+        right: 90px;
+        text-align: center;
+      }
+
+      /* ---------- dark world (0 -> 5 s) ---------- */
+      #night {
+        background: radial-gradient(ellipse at 50% 42%, var(--nuit) 0%, var(--noir) 72%);
+      }
+      #glow {
+        position: absolute;
+        left: 90px;
+        top: 760px;
+        width: 900px;
+        height: 900px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(3, 91, 247, 0.32) 0%, rgba(3, 91, 247, 0) 65%);
+        opacity: 0;
+      }
+      .p {
+        position: absolute;
+        border-radius: 50%;
+        opacity: 0;
+      }
+
+      /* scene 1: the hook */
+      #hook {
+        top: 500px;
+        color: var(--blanc);
+        font-size: 86px;
+        font-weight: 800;
+      }
+      .ui {
+        position: absolute;
+        border-radius: 40px;
+      }
+      #ui-input {
+        left: 130px;
+        top: 1360px;
+        width: 820px;
+        height: 124px;
+        border-radius: 62px;
+        border: 2px solid rgba(255, 255, 255, 0.24);
+        background: rgba(255, 255, 255, 0.04);
+      }
+      #ui-cursor {
+        position: absolute;
+        left: 64px;
+        top: 38px;
+        width: 4px;
+        height: 48px;
+        border-radius: 2px;
+        background: rgba(255, 255, 255, 0.8);
+      }
+      #ui-send {
+        position: absolute;
+        right: 14px;
+        top: 14px;
+        width: 92px;
+        height: 92px;
+        border-radius: 50%;
+        background: var(--bleu);
+      }
+      #ui-b1 {
+        left: 130px;
+        top: 1080px;
+        width: 560px;
+        height: 110px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-bottom-left-radius: 10px;
+      }
+      #ui-b2 {
+        left: 530px;
+        top: 1214px;
+        width: 420px;
+        height: 110px;
+        background: var(--bleu);
+        border-bottom-right-radius: 10px;
+      }
+      .ui-line {
+        position: absolute;
+        left: 40px;
+        height: 14px;
+        border-radius: 7px;
+        background: rgba(255, 255, 255, 0.28);
+      }
+      #ui-b2 .ui-line {
+        background: rgba(255, 255, 255, 0.55);
+      }
+
+      /* scene 2: the app's real screens */
+      #discover {
+        top: 230px;
+        color: var(--blanc);
+        font-size: 62px;
+        font-weight: 700;
+      }
+      #phone {
+        position: absolute;
+        left: 244px;
+        top: 540px;
+        width: 592px;
+        height: 1244px;
+        border-radius: 72px;
+        background: var(--noir);
+        border: 3px solid var(--n4);
+        box-shadow: 0 40px 90px rgba(0, 0, 0, 0.55);
+      }
+      #screen {
+        position: absolute;
+        left: 13px;
+        top: 13px;
+        width: 560px;
+        height: 1212px;
+        border-radius: 58px;
+        overflow: hidden;
+        background: var(--blanc);
+      }
+      /* each shot lives in the screenshot's own pixel space (1170 x 2532), fitted to 560 px */
+      .shot {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1170px;
+        height: 2532px;
+        transform-origin: 0 0;
+        transform: scale(0.478632);
+      }
+      .shot-cam {
+        position: absolute;
+        inset: 0;
+      }
+      .shot-cam img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1170px;
+        height: 2532px;
+        display: block;
+      }
+      .ring {
+        position: absolute;
+        border: 9px solid var(--bleu);
+        border-radius: 46px;
+        box-shadow: 0 0 46px rgba(3, 91, 247, 0.55);
+        opacity: 0;
+      }
+      #screen-white {
+        position: absolute;
+        inset: 0;
+        background: var(--blanc);
+        opacity: 0;
+      }
+      #burst {
+        position: absolute;
+        left: 340px;
+        top: 960px;
+        width: 400px;
+        height: 400px;
+        border-radius: 50%;
+        background: var(--blanc);
+        opacity: 0;
+      }
+
+      /* ---------- light world (5 -> 10 s) ---------- */
+      #day {
+        background: var(--blanc);
+      }
+      /* official colour logo (file pixels), fitted to 900 px wide, centred at y 860 */
+      #logo-fit {
+        position: absolute;
+        left: -8.4px;
+        top: 674.5px;
+        width: 2172px;
+        height: 724px;
+        transform-origin: 0 0;
+        transform: scale(0.50477);
+      }
+      #logo-cam {
+        position: absolute;
+        inset: 0;
+        transform-origin: 1086px 367px;
+      }
+      #logo-cam img {
+        position: absolute;
+        display: block;
+      }
+      #tagline {
+        top: 1110px;
+        color: var(--nuit);
+      }
+      #tag-1 {
+        font-size: 60px;
+        font-weight: 600;
+      }
+      #tag-2 {
+        font-size: 84px;
+        font-weight: 800;
+      }
+      #tag-bar {
+        width: 120px;
+        height: 10px;
+        margin: 34px auto 0;
+        background: var(--bleu);
+        transform-origin: 50% 50%;
+      }
+      #rdv {
+        top: 880px;
+        color: var(--nuit);
+      }
+      #rdv-1 {
+        font-size: 88px;
+        font-weight: 700;
+      }
+      #rdv-2 {
+        font-size: 230px;
+        font-weight: 800;
+        letter-spacing: -0.04em;
+      }
+      #rdv-3 {
+        margin-top: 26px;
+        font-family: "Inter", sans-serif;
+        font-size: 52px;
+        font-weight: 600;
+        line-height: 1.3;
+        color: var(--n4);
+        letter-spacing: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1080" data-height="1920">
+      <!-- ================= DARK WORLD: hook + discovery (0 -> 5.0) ================= -->
+      <section id="night" class="clip" data-start="0" data-duration="5" data-track-index="0">
+        <div id="glow"></div>
+        <div id="particles"></div>
+
+        <!-- scene 1 — hook (0 -> 2.5): an interface sketches itself while the question lands -->
+        <div id="s1">
+          <div class="col title" id="hook" data-layout-allow-overlap>
+            <span class="mask"><span id="h1">Et si l'IA</span></span>
+            <span class="mask"><span id="h2">devenait votre</span></span>
+            <span class="mask"><span id="h3"><span class="bleu">meilleur allié</span> ?</span></span>
+          </div>
+          <div class="ui" id="ui-b1">
+            <div class="ui-line" style="top: 32px; width: 380px"></div>
+            <div class="ui-line" style="top: 62px; width: 250px"></div>
+          </div>
+          <div class="ui" id="ui-b2">
+            <div class="ui-line" style="top: 34px; width: 300px"></div>
+            <div class="ui-line" style="top: 62px; width: 180px"></div>
+          </div>
+          <div class="ui" id="ui-input"><div id="ui-cursor"></div><div id="ui-send"></div></div>
+        </div>
+
+        <!-- scene 2 — discovery (2.5 -> 4.9): three real MELIM screens, one feature lit on each -->
+        <div id="s2">
+          <div class="col title" id="discover" data-layout-allow-overlap>
+            <span class="mask"><span id="d1">Découvrez</span></span>
+            <span class="mask"><span id="d2">une <span class="bleu">nouvelle façon</span></span></span>
+            <span class="mask"><span id="d3">de travailler.</span></span>
+          </div>
+          <div id="phone">
+            <div id="screen">
+              <div class="shot" id="shot-a">
+                <div class="shot-cam" id="cam-a" style="transform-origin: 585px 1662px">
+                  <img src="assets/shots/app-accueil.png" alt="Accueil MELIM" />
+                  <div class="ring" id="ring-input" style="left: 38px; top: 1573px; width: 1093px; height: 178px; border-radius: 89px"></div>
+                </div>
+              </div>
+              <div class="shot" id="shot-b">
+                <div class="shot-cam" id="cam-b" style="transform-origin: 380px 1400px">
+                  <img src="assets/shots/app-accueil-usages.png" alt="Usages MELIM" />
+                  <div class="ring" id="ring-redac" style="left: 262px; top: 1269px; width: 320px; height: 106px"></div>
+                  <div class="ring" id="ring-code" style="left: 41px; top: 1269px; width: 213px; height: 106px"></div>
+                  <div class="ring" id="ring-docs" style="left: 389px; top: 1422px; width: 321px; height: 106px"></div>
+                </div>
+              </div>
+              <div class="shot" id="shot-c">
+                <div class="shot-cam" id="cam-c" style="transform-origin: 494px 1000px">
+                  <img src="assets/shots/app-menu.png" alt="Menu MELIM" />
+                  <div class="ring" id="ring-images" style="left: 56px; top: 800px; width: 876px; height: 115px; border-radius: 30px"></div>
+                  <div class="ring" id="ring-api" style="left: 56px; top: 1076px; width: 876px; height: 115px; border-radius: 30px"></div>
+                </div>
+              </div>
+              <div id="screen-white"></div>
+            </div>
+          </div>
+        </div>
+        <div id="burst"></div>
+      </section>
+
+      <!-- ================= LIGHT WORLD: brand + meeting (4.9 -> 10) ================= -->
+      <section id="day" class="clip" data-start="4.9" data-duration="5.1" data-track-index="1">
+        <div id="logo-fit">
+          <div id="logo-cam">
+            <img id="logo-symbol" src="assets/logo/symbol.png" alt="" style="left: 195px; top: 141px; width: 487px; height: 453px" />
+            <img id="logo-word" src="assets/logo/wordmark.png" alt="MELIM" style="left: 744px; top: 229px; width: 1234px; height: 271px" />
+          </div>
+        </div>
+        <div class="col title" id="tagline" data-layout-allow-overlap>
+          <span class="mask"><span id="tag-1">L'intelligence artificielle,</span></span>
+          <span class="mask"><span id="tag-2" class="bleu">autrement.</span></span>
+          <div id="tag-bar"></div>
+        </div>
+        <div class="col title" id="rdv" data-layout-allow-overlap>
+          <span class="mask"><span id="rdv-1">Rendez-vous</span></span>
+          <span class="mask"><span id="rdv-2" class="bleu">à 15h</span></span>
+          <span class="mask"><span id="rdv-3">pour la démonstration interne.</span></span>
+        </div>
+      </section>
+
+      <!-- ================= SOUND ================= -->
+      <!-- music: procedural electro bed (tools/synth_audio.py), ducked under the voice -->
+      <audio
+        id="music"
+        src="assets/music/melim-electro-120bpm.wav"
+        data-start="0"
+        data-duration="10"
+        data-track-index="10"
+        data-volume="1"
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.8},{"t":0.25,"v":0.8},{"t":0.4,"v":0.38},{"t":2.36,"v":0.38},{"t":2.5,"v":0.62},{"t":2.6,"v":0.62},{"t":2.72,"v":0.36},{"t":4.62,"v":0.36},{"t":4.72,"v":0.75},{"t":5.0,"v":0.75},{"t":5.12,"v":0.4},{"t":6.94,"v":0.4},{"t":7.05,"v":0.6},{"t":7.22,"v":0.6},{"t":7.35,"v":0.36},{"t":9.86,"v":0.36},{"t":9.95,"v":0.5},{"t":10,"v":0.5}]}]}'
+      ></audio>
+
+      <!-- voice: Kokoro ff_siwis (local), on one bus: clean, even, clear, peak-safe -->
+      <hf-audio-group
+        id="voiceover"
+        data-label="Voix off"
+        data-volume="1"
+        data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;highpass&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Remove Rumble&quot;,&quot;params&quot;:{&quot;frequency&quot;:90,&quot;q&quot;:0.707,&quot;poles&quot;:&quot;2&quot;}},{&quot;type&quot;:&quot;compressor&quot;,&quot;id&quot;:&quot;n2&quot;,&quot;label&quot;:&quot;Even Out Loudness&quot;,&quot;params&quot;:{&quot;threshold&quot;:-26,&quot;ratio&quot;:3,&quot;attack&quot;:10,&quot;release&quot;:180,&quot;knee&quot;:2.83,&quot;makeup&quot;:4,&quot;mix&quot;:1}},{&quot;type&quot;:&quot;peaking&quot;,&quot;id&quot;:&quot;n3&quot;,&quot;label&quot;:&quot;Add Clarity&quot;,&quot;params&quot;:{&quot;frequency&quot;:3000,&quot;gain&quot;:2,&quot;q&quot;:1}},{&quot;type&quot;:&quot;gain&quot;,&quot;id&quot;:&quot;n4&quot;,&quot;label&quot;:&quot;Level&quot;,&quot;params&quot;:{&quot;gain&quot;:3}},{&quot;type&quot;:&quot;truepeak&quot;,&quot;id&quot;:&quot;n5&quot;,&quot;label&quot;:&quot;Peak Ceiling&quot;,&quot;params&quot;:{&quot;ceiling&quot;:-1.5,&quot;lookahead&quot;:3,&quot;release&quot;:80}}]}"
+      ></hf-audio-group>
+      <audio id="vo1" data-audio-group="voiceover" src="assets/vo/vo1.wav" data-start="0.3" data-duration="2.2" data-track-index="11" data-volume="1"></audio>
+      <audio id="vo2" data-audio-group="voiceover" src="assets/vo/vo2.wav" data-start="2.62" data-duration="2.13" data-track-index="11" data-volume="1"></audio>
+      <audio id="vo3" data-audio-group="voiceover" src="assets/vo/vo3.wav" data-start="5.05" data-duration="2.0" data-track-index="11" data-volume="1"></audio>
+      <audio id="vo4" data-audio-group="voiceover" src="assets/vo/vo4.wav" data-start="7.25" data-duration="2.73" data-track-index="11" data-volume="1"></audio>
+
+      <!-- sfx (procedural) -->
+      <audio id="sfx-wh-1" src="assets/sfx/whoosh.wav" data-start="2.36" data-duration="0.32" data-track-index="12" data-volume="0.45"></audio>
+      <audio id="sfx-wh-2" src="assets/sfx/whoosh.wav" data-start="3.1" data-duration="0.32" data-track-index="13" data-volume="0.4"></audio>
+      <audio id="sfx-wh-3" src="assets/sfx/whoosh.wav" data-start="3.85" data-duration="0.32" data-track-index="12" data-volume="0.4"></audio>
+      <audio id="sfx-t-1" src="assets/sfx/tick.wav" data-start="2.8" data-duration="0.12" data-track-index="14" data-volume="0.3"></audio>
+      <audio id="sfx-t-2" src="assets/sfx/tick.wav" data-start="3.42" data-duration="0.12" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="sfx-t-3" src="assets/sfx/tick.wav" data-start="3.58" data-duration="0.12" data-track-index="14" data-volume="0.3"></audio>
+      <audio id="sfx-t-4" src="assets/sfx/tick.wav" data-start="3.74" data-duration="0.12" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="sfx-t-5" src="assets/sfx/tick.wav" data-start="4.17" data-duration="0.12" data-track-index="14" data-volume="0.3"></audio>
+      <audio id="sfx-t-6" src="assets/sfx/tick.wav" data-start="4.37" data-duration="0.12" data-track-index="15" data-volume="0.3"></audio>
+      <audio id="sfx-burst" src="assets/sfx/burst.wav" data-start="4.45" data-duration="0.5" data-track-index="16" data-volume="0.4"></audio>
+      <audio id="sfx-hit" src="assets/sfx/hit.wav" data-start="4.96" data-duration="1.6" data-track-index="17" data-volume="0.6"></audio>
+      <audio id="sfx-t-7" src="assets/sfx/tick.wav" data-start="7.88" data-duration="0.12" data-track-index="14" data-volume="0.35"></audio>
+    </div>
+
+    <script>
+      // particles: built once from a seeded generator (deterministic, same every render)
+      (function () {
+        let seed = 20261119;
+        const rnd = () => {
+          seed |= 0;
+          seed = (seed + 0x6d2b79f5) | 0;
+          let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+          t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+          return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+        };
+        const host = document.getElementById("particles");
+        window.__particles = [];
+        for (let i = 0; i < 46; i++) {
+          const el = document.createElement("div");
+          el.className = "p";
+          el.id = "p" + i;
+          const size = 2 + Math.round(rnd() * 5);
+          el.style.left = Math.round(40 + rnd() * 1000) + "px";
+          el.style.top = Math.round(120 + rnd() * 1700) + "px";
+          el.style.width = el.style.height = size + "px";
+          el.style.background = rnd() < 0.45 ? "#035BF7" : "#FFFFFF";
+          if (size > 5) el.style.filter = "blur(1.5px)";
+          host.appendChild(el);
+          window.__particles.push({ el, dy: -(80 + rnd() * 260), a: 0.25 + rnd() * 0.6, d0: rnd() * 0.9 });
+        }
+      })();
+
+      const tl = gsap.timeline({ paused: true });
+      const E = "power3.out";
+      const EI = "power3.in";
+
+      // ---------- particles + blue light (0 -> 5) ----------
+      window.__particles.forEach(({ el, dy, a, d0 }) => {
+        tl.fromTo(el, { y: 0, opacity: 0 }, { y: dy * 0.5, opacity: a, duration: 2.2, ease: "sine.out" }, d0);
+        tl.to(el, { y: dy, opacity: a * 0.5, duration: 2.2, ease: "sine.inOut" }, d0 + 2.21);
+      });
+      tl.fromTo("#glow", { opacity: 0, scale: 0.7 }, { opacity: 0.7, scale: 1, duration: 1.4, ease: "sine.out" }, 0.1);
+
+      // ---------- scene 1 — hook (0 -> 2.5) ----------
+      tl.fromTo("#ui-input", { clipPath: "inset(0% 100% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.55, ease: E }, 0.15);
+      tl.fromTo("#ui-cursor", { opacity: 0 }, { opacity: 1, duration: 0.01, ease: "none", repeat: 5, yoyo: true, repeatDelay: 0.24 }, 0.5);
+      tl.fromTo("#ui-b1", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 0.55);
+      tl.fromTo("#ui-b2", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 0.85);
+      // VO: "Et si l'IA" 0.33 · "devenait votre" 1.14 · "meilleur allié ?" ~1.6
+      tl.fromTo("#h1", { yPercent: 130 }, { yPercent: 0, duration: 0.5, ease: E }, 0.3);
+      tl.fromTo("#h2", { yPercent: 130 }, { yPercent: 0, duration: 0.5, ease: E }, 1.12);
+      tl.fromTo("#h3", { yPercent: 130 }, { yPercent: 0, duration: 0.5, ease: E }, 1.58);
+      // out: the sketch gives way to the real app
+      tl.to("#s1", { opacity: 0, y: -60, duration: 0.25, ease: EI }, 2.35);
+
+      // ---------- scene 2 — discovery (2.5 -> 4.9) ----------
+      // VO: "Découvrez" 2.66 · "une nouvelle façon de travailler" 3.27
+      tl.fromTo("#d1", { yPercent: 130 }, { yPercent: 0, duration: 0.45, ease: E }, 2.6);
+      tl.fromTo("#d2", { yPercent: 130 }, { yPercent: 0, duration: 0.45, ease: E }, 3.22);
+      tl.fromTo("#d3", { yPercent: 130 }, { yPercent: 0, duration: 0.45, ease: E }, 3.62);
+      tl.fromTo("#phone", { y: 1500, scale: 0.92 }, { y: 0, scale: 1, duration: 0.5, ease: "power4.out" }, 2.4);
+      // three screens pushed in on the beat: 2.5 · 3.25 · 4.0
+      tl.fromTo("#shot-b", { x: 600 }, { x: 600, duration: 0.01, ease: "none" }, 0);
+      tl.fromTo("#shot-c", { x: 600 }, { x: 600, duration: 0.01, ease: "none" }, 0);
+      tl.fromTo("#cam-a", { scale: 1 }, { scale: 1.12, duration: 0.8, ease: "sine.inOut" }, 2.5);
+      tl.fromTo("#ring-input", { opacity: 0, scale: 1.08 }, { opacity: 1, scale: 1, duration: 0.25, ease: E }, 2.8);
+      tl.to("#shot-a", { x: -600, duration: 0.28, ease: "power3.inOut" }, 3.12);
+      tl.to("#shot-b", { x: 0, duration: 0.28, ease: "power3.inOut" }, 3.12);
+      tl.fromTo("#cam-b", { scale: 1 }, { scale: 1.16, duration: 0.8, ease: "sine.inOut" }, 3.25);
+      ["#ring-redac", "#ring-code", "#ring-docs"].forEach((r, i) => {
+        tl.fromTo(r, { opacity: 0, scale: 1.12 }, { opacity: 1, scale: 1, duration: 0.22, ease: E }, 3.42 + i * 0.16);
+      });
+      tl.to("#shot-b", { x: -600, duration: 0.28, ease: "power3.inOut" }, 3.87);
+      tl.to("#shot-c", { x: 0, duration: 0.28, ease: "power3.inOut" }, 3.87);
+      tl.fromTo("#cam-c", { scale: 1 }, { scale: 1.12, duration: 0.9, ease: "sine.inOut" }, 4.0);
+      tl.fromTo("#ring-images", { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.22, ease: E }, 4.17);
+      tl.fromTo("#ring-api", { opacity: 0, scale: 1.06 }, { opacity: 1, scale: 1, duration: 0.22, ease: E }, 4.37);
+      // light floods in from the screen: the dark world turns white
+      // dive into the app's white screen, then the light fills the frame
+      tl.to("#discover", { opacity: 0, duration: 0.25, ease: EI }, 4.5);
+      tl.fromTo("#screen-white", { opacity: 0 }, { opacity: 1, duration: 0.22, ease: "sine.in" }, 4.55);
+      tl.to("#phone", { scale: 4.2, transformOrigin: "296px 930px", duration: 0.4, ease: "power3.in" }, 4.5);
+      tl.fromTo("#burst", { scale: 0, opacity: 0 }, { scale: 2, opacity: 1, duration: 0.06, ease: "none" }, 4.76);
+      tl.to("#burst", { scale: 11, duration: 0.14, ease: "power2.in" }, 4.82);
+
+      // ---------- scene 3 — the brand (4.9 -> 7.0) ----------
+      tl.fromTo("#logo-symbol", { scale: 0.6, opacity: 0, transformOrigin: "50% 50%" }, { scale: 1, opacity: 1, duration: 0.6, ease: "back.out(1.6)" }, 5.0);
+      tl.fromTo(
+        "#logo-word",
+        { x: -60, opacity: 0, clipPath: "inset(0% 100% 0% 0%)" },
+        { x: 0, opacity: 1, clipPath: "inset(0% 0% 0% 0%)", duration: 0.6, ease: E },
+        5.2
+      );
+      // VO: "L'intelligence artificielle," 5.08 · "autrement." 6.47
+      tl.fromTo("#tag-1", { yPercent: 130 }, { yPercent: 0, duration: 0.5, ease: E }, 5.45);
+      tl.fromTo("#tag-2", { yPercent: 130 }, { yPercent: 0, duration: 0.45, ease: E }, 6.4);
+      tl.fromTo("#tag-bar", { scaleX: 0 }, { scaleX: 1, duration: 0.45, ease: E }, 6.55);
+
+      // ---------- scene 4 — the meeting (7.0 -> 10) ----------
+      tl.to("#tagline", { opacity: 0, y: 30, duration: 0.25, ease: EI }, 6.98);
+      tl.to("#logo-cam", { y: -340, scale: 0.72, duration: 0.55, ease: "power3.inOut" }, 7.0);
+      // VO: "Rendez-vous" 7.29 · "à quinze heures" 7.9 · "pour la démonstration interne" 8.49
+      tl.fromTo("#rdv-1", { yPercent: 130 }, { yPercent: 0, duration: 0.45, ease: E }, 7.25);
+      tl.fromTo("#rdv-2", { yPercent: 130 }, { yPercent: 0, duration: 0.5, ease: "back.out(1.4)" }, 7.85);
+      tl.fromTo("#rdv-3", { yPercent: 130 }, { yPercent: 0, duration: 0.5, ease: E }, 8.45);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>
