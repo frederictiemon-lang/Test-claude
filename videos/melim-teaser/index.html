@@ -395,7 +395,7 @@
         data-duration="10"
         data-track-index="10"
         data-volume="1"
-        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.8},{"t":0.25,"v":0.8},{"t":0.4,"v":0.38},{"t":2.36,"v":0.38},{"t":2.5,"v":0.62},{"t":2.6,"v":0.62},{"t":2.72,"v":0.36},{"t":4.62,"v":0.36},{"t":4.72,"v":0.75},{"t":5.0,"v":0.75},{"t":5.12,"v":0.4},{"t":6.94,"v":0.4},{"t":7.05,"v":0.6},{"t":7.22,"v":0.6},{"t":7.35,"v":0.36},{"t":9.86,"v":0.36},{"t":9.95,"v":0.5},{"t":10,"v":0.5}]}]}'
+        data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0.8},{"t":0.25,"v":0.8},{"t":0.4,"v":0.38},{"t":2.15,"v":0.38},{"t":2.3,"v":0.62},{"t":2.6,"v":0.62},{"t":2.72,"v":0.36},{"t":4.62,"v":0.36},{"t":4.72,"v":0.75},{"t":5.0,"v":0.75},{"t":5.12,"v":0.4},{"t":6.94,"v":0.4},{"t":7.05,"v":0.6},{"t":7.22,"v":0.6},{"t":7.35,"v":0.36},{"t":9.86,"v":0.36},{"t":9.95,"v":0.5},{"t":10,"v":0.5}]}]}'
       ></audio>
 
       <!-- voice: Kokoro ff_siwis (local), on one bus: clean, even, clear, peak-safe -->
@@ -405,7 +405,7 @@
         data-volume="1"
         data-fx-chain="{&quot;version&quot;:1,&quot;nodes&quot;:[{&quot;type&quot;:&quot;highpass&quot;,&quot;id&quot;:&quot;n1&quot;,&quot;label&quot;:&quot;Remove Rumble&quot;,&quot;params&quot;:{&quot;frequency&quot;:90,&quot;q&quot;:0.707,&quot;poles&quot;:&quot;2&quot;}},{&quot;type&quot;:&quot;compressor&quot;,&quot;id&quot;:&quot;n2&quot;,&quot;label&quot;:&quot;Even Out Loudness&quot;,&quot;params&quot;:{&quot;threshold&quot;:-26,&quot;ratio&quot;:3,&quot;attack&quot;:10,&quot;release&quot;:180,&quot;knee&quot;:2.83,&quot;makeup&quot;:4,&quot;mix&quot;:1}},{&quot;type&quot;:&quot;peaking&quot;,&quot;id&quot;:&quot;n3&quot;,&quot;label&quot;:&quot;Add Clarity&quot;,&quot;params&quot;:{&quot;frequency&quot;:3000,&quot;gain&quot;:2,&quot;q&quot;:1}},{&quot;type&quot;:&quot;gain&quot;,&quot;id&quot;:&quot;n4&quot;,&quot;label&quot;:&quot;Level&quot;,&quot;params&quot;:{&quot;gain&quot;:3}},{&quot;type&quot;:&quot;truepeak&quot;,&quot;id&quot;:&quot;n5&quot;,&quot;label&quot;:&quot;Peak Ceiling&quot;,&quot;params&quot;:{&quot;ceiling&quot;:-1.5,&quot;lookahead&quot;:3,&quot;release&quot;:80}}]}"
       ></hf-audio-group>
-      <audio id="vo1" data-audio-group="voiceover" src="assets/vo/vo1.wav" data-start="0.3" data-duration="2.2" data-track-index="11" data-volume="1"></audio>
+      <audio id="vo1" data-audio-group="voiceover" src="assets/vo/vo1.wav" data-start="0.3" data-duration="1.96" data-track-index="11" data-volume="1"></audio>
       <audio id="vo2" data-audio-group="voiceover" src="assets/vo/vo2.wav" data-start="2.62" data-duration="2.13" data-track-index="11" data-volume="1"></audio>
       <audio id="vo3" data-audio-group="voiceover" src="assets/vo/vo3.wav" data-start="5.05" data-duration="2.0" data-track-index="11" data-volume="1"></audio>
       <audio id="vo4" data-audio-group="voiceover" src="assets/vo/vo4.wav" data-start="7.25" data-duration="2.73" data-track-index="11" data-volume="1"></audio>
@@ -469,10 +469,10 @@
       tl.fromTo("#ui-cursor", { opacity: 0 }, { opacity: 1, duration: 0.01, ease: "none", repeat: 5, yoyo: true, repeatDelay: 0.24 }, 0.5);
       tl.fromTo("#ui-b1", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 0.55);
       tl.fromTo("#ui-b2", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.45, ease: E }, 0.85);
-      // VO: "Et si l'IA" 0.33 · "devenait votre" 1.14 · "meilleur allié ?" ~1.6
-      tl.fromTo("#h1", { yPercent: 130 }, { yPercent: 0, duration: 0.5, ease: E }, 0.3);
-      tl.fromTo("#h2", { yPercent: 130 }, { yPercent: 0, duration: 0.5, ease: E }, 1.12);
-      tl.fromTo("#h3", { yPercent: 130 }, { yPercent: 0, duration: 0.5, ease: E }, 1.58);
+      // VO (said "li-a", tools/make_vo1.py): "Et si l'IA" 0.33 · "devenait votre" ~0.77 · "meilleur allié ?" ~1.44 → 2.11
+      tl.fromTo("#h1", { yPercent: 130 }, { yPercent: 0, duration: 0.45, ease: E }, 0.3);
+      tl.fromTo("#h2", { yPercent: 130 }, { yPercent: 0, duration: 0.45, ease: E }, 0.76);
+      tl.fromTo("#h3", { yPercent: 130 }, { yPercent: 0, duration: 0.45, ease: E }, 1.4);
       // out: the sketch gives way to the real app
       tl.to("#s1", { opacity: 0, y: -60, duration: 0.25, ease: EI }, 2.35);
 

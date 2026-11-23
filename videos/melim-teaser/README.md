@@ -44,9 +44,13 @@ Référence de marque : `assets/src/MELIM_Brand_Book_V1.0.pdf`.
 
 ## Voix et son
 
-- Voix : Kokoro (local, `hyperframes tts`), voix française `ff_siwis`, vitesse 1,1. Aucun service
-  de voix authentifié n'était disponible. « IA » est écrit « I.A. » pour être prononcé « i-a » et
-  « 15h » est lu « quinze heures ».
+- Voix : Kokoro (local), voix française `ff_siwis`, vitesse 1,1. Aucun service de voix
+  authentifié n'était disponible. « 15h » est lu « quinze heures ».
+- « l'IA » (phrase 1) : la v1 écrivait « l'I.A. » ; les points étaient lus comme des fins de
+  phrase et créaient une coupure de 80 ms entre « i » et « a », entendue « l'ITA ». La v2
+  (`tools/make_vo1.py`) donne la phrase au moteur en phonétique, avec « l'IA » écrit [liˈa] :
+  prononciation « li-a », sans coupure (vérifié sur la forme d'onde). La phrase dure 1,96 s ;
+  l'apparition des mots à l'écran et la baisse de la musique ont été recalées.
 - Chaîne voix (bus HyperFrames) : passe-haut, compresseur, clarté, gain, limiteur ; musique
   abaissée sous la voix par automation.
 - Musique et effets (whooshs, ticks, montée lumineuse, impact) générés par `tools/synth_audio.py`,
@@ -57,7 +61,9 @@ Référence de marque : `assets/src/MELIM_Brand_Book_V1.0.pdf`.
 ```bash
 python3 tools/split_logo.py    # calques du logo
 python3 tools/synth_audio.py   # musique + effets
-bash -c 'i=1; while IFS= read -r l; do npx hyperframes@0.8.150 tts "$l" --voice ff_siwis --speed 1.1 -o assets/vo/vo$i.wav </dev/null; i=$((i+1)); done < assets/vo/script.txt'
+# phrases 2 à 4 (la phrase 1 se refait avec tools/make_vo1.py)
+bash -c 'i=1; while IFS= read -r l; do [ $i -gt 1 ] && npx hyperframes@0.8.150 tts "$l" --voice ff_siwis --speed 1.1 -o assets/vo/vo$i.wav </dev/null; i=$((i+1)); done < assets/vo/script.txt'
+python3 tools/make_vo1.py
 npx hyperframes@0.8.150 check
 npx hyperframes@0.8.150 render --quality high --fps 30 --format mp4 --output renders/melim-teaser-10s-9x16.mp4
 ```
