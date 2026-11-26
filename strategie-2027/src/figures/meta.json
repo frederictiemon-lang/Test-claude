@@ -1,0 +1,66 @@
+{
+  "groupe": {
+    "w": 820,
+    "h": 514
+  },
+  "org_actuelle": {
+    "w": 820,
+    "h": 591
+  },
+  "maison": {
+    "w": 820,
+    "h": 437
+  },
+  "logique": {
+    "w": 820,
+    "h": 324
+  },
+  "axes": {
+    "w": 820,
+    "h": 411
+  },
+  "org_cible": {
+    "w": 820,
+    "h": 592
+  },
+  "gouvernance": {
+    "w": 820,
+    "h": 508
+  },
+  "analytique": {
+    "w": 820,
+    "h": 246
+  },
+  "synergies": {
+    "w": 820,
+    "h": 309
+  },
+  "mobilisation": {
+    "w": 820,
+    "h": 216
+  },
+  "ia_trajectoire": {
+    "w": 820,
+    "h": 213
+  },
+  "ia_dimensions": {
+    "w": 820,
+    "h": 338
+  },
+  "frise": {
+    "w": 1240,
+    "h": 578
+  },
+  "pyramide": {
+    "w": 820,
+    "h": 312
+  },
+  "dashboard": {
+    "w": 820,
+    "h": 393
+  },
+  "cover_bg": {
+    "w": 794,
+    "h": 1123
+  }
+}
