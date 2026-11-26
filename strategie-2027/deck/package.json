@@ -1,0 +1,12 @@
+{
+  "name": "strategie-2027-deck",
+  "private": true,
+  "description": "Génération du PowerPoint Stratégie 2027 du Groupe KCS - RLCS - LUKE",
+  "dependencies": {
+    "pptxgenjs": "^3.12.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.4.0",
+    "sharp": "^0.33.5"
+  }
+}
