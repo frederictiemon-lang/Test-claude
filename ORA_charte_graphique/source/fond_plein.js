@@ -14,10 +14,15 @@ const files = [
   ['ORA_symbole_fond_blanc', B, L.symbolC(S / 2, S / 2, S * 0.5, N)],
   ['ORA_logo_complet_fond_noir', N, L.lockupC(S / 2, S / 2, S * 0.6, B)],
   ['ORA_logo_complet_fond_blanc', B, L.lockupC(S / 2, S / 2, S * 0.6, N)],
+  // Nom seul : largeur = 60 % du format, centré
+  ['ORA_nom_fond_noir', N, L.wordmark(S * 0.2, (S - L.wmH(S * 0.6)) / 2, S * 0.6, B)],
+  ['ORA_nom_fond_blanc', B, L.wordmark(S * 0.2, (S - L.wmH(S * 0.6)) / 2, S * 0.6, N)],
 ];
+const only = process.argv[2];
 
 (async () => {
   for (const [n, bg, inner] of files) {
+    if (only && !n.includes(only)) continue;
     const f = await L.render(n, L.page(svg(bg, inner), S, S, bg), S, S, { dsf: 1, type: 'png' });
     fs.copyFileSync(f, path.join(OUT, n + '.png'));
   }

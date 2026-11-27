@@ -10,7 +10,7 @@ Signature officielle : **RELEVER VOTRE AURA.**
 | Version PowerPoint modifiable, avec notes | `ORA_Charte_Graphique_Officielle.pptx` |
 | Planches de présentation du logo, A4 paysage à 300 dpi | `01_planches_logo/` |
 | Déclinaisons monochromes : logo et symbole, en noir et en blanc, SVG et PNG transparents de 3000 px | `02_declinaisons_monochromes/` |
-| Logo sur fond plein, PNG et JPG de 3000 × 3000 px : symbole seul et logo complet, sur fond noir et sur fond blanc (archive `ORA_logos_PNG_JPG.zip` incluse) | `04_logos_fond_plein/` |
+| Logo sur fond plein, PNG et JPG de 3000 × 3000 px : symbole seul, nom seul et logo complet, sur fond noir et sur fond blanc (archive `ORA_logos_PNG_JPG.zip` incluse) | `04_logos_fond_plein/` |
 | Applications physiques : gravures, fermoir, étiquettes, écrins, packaging | `03_applications/physiques/` |
 | Applications digitales : profil Instagram, couverture Facebook, publications, stories, visuel promotionnel, animation du logo de 5 s | `03_applications/digitales/` |
 | Images de principe pour la direction photographique | `03_applications/photographie_principe/` |
